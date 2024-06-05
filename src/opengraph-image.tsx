@@ -29,7 +29,7 @@ export default async function Image() {
           color: "#005531",
         }}
       >
-        V
+        T
       </div>
     ),
     {
