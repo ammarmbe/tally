@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, Plus } from "lucide-react";
 import Spinner from "../../Spinner";
 import { Button } from "../../ui/button";
-import { CardTitle } from "../../ui/card";
 import EditCoursesCourse from "./EditCoursesCourse";
 
 export default function EditCourses() {
@@ -51,7 +50,9 @@ export default function EditCourses() {
 
   return (
     <section className="flex h-[calc(100dvh-4.5rem)] flex-col px-4 pb-32">
-      <CardTitle className="pb-6 pt-2 text-xl">Edit Courses</CardTitle>
+      <h2 className="pb-6 pt-2 text-xl font-semibold leading-none tracking-tight">
+        Edit Courses
+      </h2>
       <div className="grid flex-wrap gap-4 pb-4 sm:flex">
         {data?.map((course) => (
           <EditCoursesCourse key={course.course_id} course={course} />

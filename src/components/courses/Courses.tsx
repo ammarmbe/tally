@@ -51,7 +51,9 @@ export default function Courses() {
 
   return (
     <section className="flex h-[calc(100dvh-4.5rem)] flex-col px-4 pb-32">
-      <CardTitle className="pb-6 pt-2 text-xl">Your Courses</CardTitle>
+      <h2 className="pb-6 pt-2 text-xl font-semibold leading-none tracking-tight">
+        Your Courses
+      </h2>
       <div className="grid flex-wrap gap-4 pb-4 sm:flex">
         {data?.map((course) => (
           <CoursesCourse key={course.course_id} course={course} />

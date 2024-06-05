@@ -4,7 +4,6 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import Spinner from "../Spinner";
-import { CardTitle } from "../ui/card";
 import dayjs from "dayjs";
 import DashboardCourse from "./DashboardCourse";
 
@@ -77,9 +76,9 @@ export default function Dashboard() {
 
   return (
     <section className="flex h-[calc(100dvh-4.5rem)] flex-col px-4 pb-32">
-      <CardTitle className="pb-6 pt-2 text-xl">
+      <h2 className="pb-6 pt-2 text-xl font-semibold leading-none tracking-tight">
         {dayjs().format("dddd, MMMM D, YYYY")}
-      </CardTitle>
+      </h2>
       <div className="grid flex-wrap gap-4 pb-4 sm:flex">
         {data?.courses.map((course) => (
           <DashboardCourse key={course.course_id} course={course} />

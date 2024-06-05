@@ -129,7 +129,7 @@ export default function Header() {
         </div>
         <Sheet>
           <SheetTrigger className="flex sm:hidden" asChild>
-            <Button size="icon" variant="ghost">
+            <Button size="icon" variant="ghost" name="Menu">
               <Menu className="size-6" />
             </Button>
           </SheetTrigger>

@@ -2,7 +2,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import DashboardCourse from "./dashboard/DashboardCourse";
 import dayjs from "dayjs";
-import { CardTitle } from "./ui/card";
 import Spinner from "./Spinner";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Button } from "./ui/button";
@@ -94,9 +93,9 @@ export default function History() {
           Object.groupBy(data.pages.flat(), (course) => course.date),
         ).map((courses, i) => (
           <div key={i} className="flex w-full flex-col gap-4">
-            <CardTitle className="text-xl">
+            <h2 className="text-xl font-semibold leading-none tracking-tight">
               {dayjs(courses?.[0].date).format("dddd, MMMM D, YYYY")}{" "}
-            </CardTitle>
+            </h2>
             <div className="grid flex-wrap gap-4 sm:flex">
               {courses?.map((course) => (
                 <DashboardCourse
