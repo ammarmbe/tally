@@ -5,6 +5,9 @@ import dayjs from "dayjs";
 import { CardTitle } from "./ui/card";
 import Spinner from "./Spinner";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Button } from "./ui/button";
+import Link from "next/link";
+import { Plus } from "lucide-react";
 
 export default function History() {
   const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery({
@@ -45,6 +48,25 @@ export default function History() {
         <Spinner size="lg" />
       </section>
     );
+
+  if (data && !data.pages.flat().length) {
+    return (
+      <section className="flex h-[calc(100dvh-4.5rem)] flex-col items-center justify-center px-4 pb-32 text-center">
+        <h2 className="text-xl font-semibold sm:text-2xl">
+          You don't have any courses
+        </h2>
+        <p className="mt-2 text-secondary-foreground">
+          Add courses to start tracking your attendance.
+        </p>
+        <Button asChild size="sm" className="mt-6">
+          <Link href="/courses/add">
+            <Plus className="mr-2 size-4" />
+            Add course
+          </Link>
+        </Button>
+      </section>
+    );
+  }
 
   return data ? (
     <section className="flex h-[calc(100dvh-4.5rem)] flex-col px-4 pb-32">
