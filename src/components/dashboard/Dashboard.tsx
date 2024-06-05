@@ -20,6 +20,7 @@ export default function Dashboard() {
           course_name: string;
           course_id: string;
           start: string;
+          room: string;
           end: string;
           attended: number;
           missed: number;
