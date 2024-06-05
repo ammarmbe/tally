@@ -134,7 +134,7 @@ export default function Header() {
             </Button>
           </SheetTrigger>
           <SheetContent className="max-w-64">
-            <NavigationMenu className="mt-4 w-full max-w-full [&_div]:w-full">
+            <NavigationMenu className="mt-6 w-full max-w-full [&_div]:w-full">
               <NavigationMenuList className="w-full flex-col gap-y-1">
                 <NavigationMenuItem className="w-full">
                   <Link href="/" legacyBehavior passHref>
