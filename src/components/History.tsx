@@ -1,0 +1,90 @@
+"use client";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import DashboardCourse from "./dashboard/DashboardCourse";
+import dayjs from "dayjs";
+import { CardTitle } from "./ui/card";
+import Spinner from "./Spinner";
+import InfiniteScroll from "react-infinite-scroll-component";
+
+export default function History() {
+  const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery({
+    queryKey: ["history"],
+    queryFn: async ({ pageParam }) => {
+      const response = await fetch(`/api/history?cursor=${pageParam}`);
+      return response.json() as Promise<
+        {
+          course_id: string;
+          entry_id: number;
+          date: string;
+          course_name: string;
+          day: string;
+          start: string;
+          end: string;
+          attended: number;
+          missed: number;
+          status: string;
+        }[]
+      >;
+    },
+
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      // convert date and start to epoch
+      const last = lastPage[lastPage.length - 1];
+      const date = dayjs(last.date).format("YYYY-MM-DD");
+      const start = dayjs(`${date} 23:59:59`).valueOf();
+
+      return start;
+    },
+  });
+
+  if (isLoading)
+    return (
+      <section className="flex h-[calc(100dvh-4.5rem)] flex-col items-center justify-center px-4 pb-32 text-center">
+        <Spinner size="lg" />
+      </section>
+    );
+
+  return data ? (
+    <section className="flex h-[calc(100dvh-4.5rem)] flex-col px-4 pb-32">
+      <InfiniteScroll
+        dataLength={
+          Object.values(
+            Object.groupBy(data.pages.flat(), (course) => course.date),
+          ).length
+        }
+        next={fetchNextPage}
+        hasMore={hasNextPage}
+        loader={
+          <div className="flex items-center justify-center p-4">
+            <Spinner size="sm" />
+          </div>
+        }
+        endMessage={
+          <p className="p-2 text-center text-muted-foreground">
+            No more courses to show
+          </p>
+        }
+        className="flex flex-col gap-6 pb-4"
+      >
+        {Object.values(
+          Object.groupBy(data.pages.flat(), (course) => course.date),
+        ).map((courses, i) => (
+          <div key={i} className="flex w-full flex-col gap-4">
+            <CardTitle className="text-xl">
+              {dayjs(courses?.[0].date).format("dddd, MMMM D, YYYY")}{" "}
+            </CardTitle>
+            <div className="grid flex-wrap gap-4 sm:flex">
+              {courses?.map((course) => (
+                <DashboardCourse
+                  key={course.course_name + course.date}
+                  course={course}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </InfiniteScroll>
+    </section>
+  ) : null;
+}
