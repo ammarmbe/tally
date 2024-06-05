@@ -12,7 +12,7 @@ import {
 } from "./ui/dropdown-menu";
 import { LogOut, Pencil, Plus } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { User } from "lucia";
+import { Session, User } from "lucia";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -31,7 +31,10 @@ export default function Header() {
     queryFn: async () => {
       const res = await fetch("/api/user");
 
-      return (await res.json()) as User | null;
+      return (await res.json()) as {
+        user: User | null;
+        session: Session | null;
+      };
     },
   });
 
@@ -71,11 +74,11 @@ export default function Header() {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-        {isLoading ? null : user ? (
+        {isLoading ? null : user?.session ? (
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Avatar className="cursor-pointer">
-                <AvatarImage src={user.imageUrl} />
+                <AvatarImage src={user.user?.imageUrl} />
                 <AvatarFallback>AE</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>

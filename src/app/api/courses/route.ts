@@ -21,13 +21,13 @@ export async function POST(req: Request) {
     name: string;
     days: string[];
     times: {
-      sunday: { start: string; end: string; room: string };
-      monday: { start: string; end: string; room: string };
-      tuesday: { start: string; end: string; room: string };
-      wednesday: { start: string; end: string; room: string };
-      thursday: { start: string; end: string; room: string };
-      friday: { start: string; end: string; room: string };
-      saturday: { start: string; end: string; room: string };
+      sunday: { start: string; end: string; room?: string };
+      monday: { start: string; end: string; room?: string };
+      tuesday: { start: string; end: string; room?: string };
+      wednesday: { start: string; end: string; room?: string };
+      thursday: { start: string; end: string; room?: string };
+      friday: { start: string; end: string; room?: string };
+      saturday: { start: string; end: string; room?: string };
     };
   } = await req.json();
 

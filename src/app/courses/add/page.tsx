@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import { Suspense } from "react";
-import AddCourse from "./times/page";
+import AddCourse from "@/components/courses/add/AddCourse";
 import Spinner from "@/components/Spinner";
 
 export default function Page() {
