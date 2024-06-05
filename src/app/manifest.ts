@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Tally",
     short_name: "Tally",
     theme_color: "#005531",
-    background_color: "#005531",
+    background_color: "#FFFFFF",
     display: "standalone",
     orientation: "portrait",
     scope: "/",
