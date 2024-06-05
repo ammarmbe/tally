@@ -19,6 +19,7 @@ export default function History() {
           course_name: string;
           day: string;
           start: string;
+          room: string;
           end: string;
           attended: number;
           missed: number;
