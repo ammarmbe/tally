@@ -2,7 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { BookMarked, Plus } from "lucide-react";
 import Spinner from "../Spinner";
 import dayjs from "dayjs";
 import DashboardCourse from "./DashboardCourse";
@@ -66,7 +66,7 @@ export default function Dashboard() {
         </p>
         <Button asChild size="sm" className="mt-6">
           <Link href="/courses">
-            <Plus className="mr-2 size-4" />
+            <BookMarked className="mr-2 size-4" />
             View courses
           </Link>
         </Button>

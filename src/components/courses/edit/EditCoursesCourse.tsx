@@ -375,25 +375,53 @@ export default function EditCoursesCourse({
                           onValueChange={(v) => field.onChange(v)}
                           {...field}
                         >
-                          <ToggleGroupItem variant="outline" value="sunday">
+                          <ToggleGroupItem
+                            variant="outline"
+                            value="sunday"
+                            className="hover:border-[#828487]/10 hover:bg-[#828487]/5 active:bg-[#828487]/20 data-[state=on]:border-[#828487]/20 data-[state=on]:bg-[#828487]/20 data-[state=on]:active:bg-[#828487]/30"
+                          >
                             Sun
                           </ToggleGroupItem>
-                          <ToggleGroupItem variant="outline" value="monday">
+                          <ToggleGroupItem
+                            variant="outline"
+                            value="monday"
+                            className="hover:border-[#828487]/10 hover:bg-[#828487]/5 active:bg-[#828487]/20 data-[state=on]:border-[#828487]/20 data-[state=on]:bg-[#828487]/20 data-[state=on]:active:bg-[#828487]/30"
+                          >
                             Mon
                           </ToggleGroupItem>
-                          <ToggleGroupItem variant="outline" value="tuesday">
+                          <ToggleGroupItem
+                            variant="outline"
+                            value="tuesday"
+                            className="hover:border-[#828487]/10 hover:bg-[#828487]/5 active:bg-[#828487]/20 data-[state=on]:border-[#828487]/20 data-[state=on]:bg-[#828487]/20 data-[state=on]:active:bg-[#828487]/30"
+                          >
                             Tue
                           </ToggleGroupItem>
-                          <ToggleGroupItem variant="outline" value="wednesday">
+                          <ToggleGroupItem
+                            variant="outline"
+                            value="wednesday"
+                            className="hover:border-[#828487]/10 hover:bg-[#828487]/5 active:bg-[#828487]/20 data-[state=on]:border-[#828487]/20 data-[state=on]:bg-[#828487]/20 data-[state=on]:active:bg-[#828487]/30"
+                          >
                             Wed
                           </ToggleGroupItem>
-                          <ToggleGroupItem variant="outline" value="thursday">
+                          <ToggleGroupItem
+                            variant="outline"
+                            value="thursday"
+                            className="hover:border-[#828487]/10 hover:bg-[#828487]/5 active:bg-[#828487]/20 data-[state=on]:border-[#828487]/20 data-[state=on]:bg-[#828487]/20 data-[state=on]:active:bg-[#828487]/30"
+                          >
                             Thu
                           </ToggleGroupItem>
-                          <ToggleGroupItem variant="outline" value="friday">
+                          <ToggleGroupItem
+                            variant="outline"
+                            value="friday"
+                            className="hover:border-[#828487]/10 hover:bg-[#828487]/5 active:bg-[#828487]/20 data-[state=on]:border-[#828487]/20 data-[state=on]:bg-[#828487]/20 data-[state=on]:active:bg-[#828487]/30"
+                          >
                             Fri
                           </ToggleGroupItem>
-                          <ToggleGroupItem variant="outline" value="saturday">
+                          <ToggleGroupItem
+                            variant="outline"
+                            value="saturday"
+                            className="hover:border-[#828487]/10 hover:bg-[#828487]/5 active:bg-[#828487]/20 data-[state=on]:border-[#828487]/20 data-[state=on]:bg-[#828487]/20 data-[state=on]:active:bg-[#828487]/30"
+                          >
                             Sat
                           </ToggleGroupItem>
                         </ToggleGroup>

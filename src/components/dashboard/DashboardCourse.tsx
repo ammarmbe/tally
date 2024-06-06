@@ -335,7 +335,7 @@ export default function DashboardCourse({
           <ToggleGroupItem
             value="cancelled"
             variant="outline"
-            className="hover:border-[#828487]/20 hover:bg-[#828487]/10 active:bg-[#828487]/20 data-[state=on]:border-[#828487]/20 data-[state=on]:bg-[#828487]/20 data-[state=on]:active:bg-[#828487]/30"
+            className="hover:border-[#828487]/10 hover:bg-[#828487]/5 active:bg-[#828487]/20 data-[state=on]:border-[#828487]/20 data-[state=on]:bg-[#828487]/20 data-[state=on]:active:bg-[#828487]/30"
           >
             Cancelled
           </ToggleGroupItem>
