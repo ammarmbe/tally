@@ -33,8 +33,8 @@ export default function DashboardCourse({
     start: string;
     date?: string;
     end: string;
-    attended: number;
-    missed: number;
+    attended: string;
+    missed: string;
     status: string | null;
   };
 }) {
@@ -78,8 +78,8 @@ export default function DashboardCourse({
                   course_id: string;
                   start: string;
                   end: string;
-                  attended: number;
-                  missed: number;
+                  attended: string;
+                  missed: string;
                   status: string | null;
                 }[];
               }
@@ -97,16 +97,16 @@ export default function DashboardCourse({
                 status: newStatus,
                 attended:
                   newStatus === "attended"
-                    ? c.attended + 1
+                    ? Number(c.attended) + 1
                     : status === "attended"
-                      ? c.attended - 1
-                      : c.attended,
+                      ? Number(c.attended) - 1
+                      : Number(c.attended),
                 missed:
                   newStatus === "missed"
-                    ? c.missed + 1
+                    ? Number(c.missed) + 1
                     : status === "missed"
-                      ? c.missed - 1
-                      : c.missed,
+                      ? Number(c.missed) - 1
+                      : Number(c.missed),
               };
             }),
           };
@@ -126,8 +126,8 @@ export default function DashboardCourse({
                   day: string;
                   start: string;
                   end: string;
-                  attended: number;
-                  missed: number;
+                  attended: string;
+                  missed: string;
                   status: string;
                 }[],
                 unknown

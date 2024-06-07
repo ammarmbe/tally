@@ -21,8 +21,8 @@ export default function Dashboard() {
           start: string;
           room: string;
           end: string;
-          attended: number;
-          missed: number;
+          attended: string;
+          missed: string;
           status: string | null;
         }[];
       };

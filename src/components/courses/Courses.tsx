@@ -15,9 +15,9 @@ export default function Courses() {
       return (await res.json()) as {
         course_name: string;
         course_id: string;
-        attended: number;
-        missed: number;
-        cancelled: number;
+        attended: string;
+        missed: string;
+        cancelled: string;
         times: string[][];
       }[];
     },

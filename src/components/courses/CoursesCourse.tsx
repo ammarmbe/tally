@@ -9,9 +9,9 @@ export default function CoursesCourse({
   course: {
     course_name: string;
     course_id: string;
-    attended: number;
-    missed: number;
-    cancelled: number;
+    attended: string;
+    missed: string;
+    cancelled: string;
     times: string[][];
   };
 }) {

@@ -177,9 +177,9 @@ export default function EditCoursesCourse({
   course: {
     course_name: string;
     course_id: string;
-    attended: number;
-    missed: number;
-    cancelled: number;
+    attended: string;
+    missed: string;
+    cancelled: string;
     times: string[][];
   };
 }) {
@@ -280,9 +280,9 @@ export default function EditCoursesCourse({
             | {
                 course_name: string;
                 course_id: string;
-                attended: number;
-                missed: number;
-                cancelled: number;
+                attended: string;
+                missed: string;
+                cancelled: string;
                 times: string[][];
               }[]
             | undefined,
