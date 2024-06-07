@@ -343,7 +343,7 @@ export default function EditCoursesCourse({
         ) => {
           if (!old) return old;
 
-          return old.filter((course) => course.course_id !== course.course_id);
+          return old.filter((c) => c.course_id !== course.course_id);
         },
       );
     },
