@@ -15,9 +15,11 @@ export async function GET() {
 
   console.log("Courses to be sent notification:", data.length);
 
+  const results = [];
+
   for await (const course of data) {
-    await sendPushNotification(course);
+    results.push(await sendPushNotification(course));
   }
 
-  return new Response(JSON.stringify(data.length));
+  return new Response(JSON.stringify(results));
 }
