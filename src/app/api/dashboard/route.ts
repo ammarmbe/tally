@@ -1,8 +1,6 @@
 import sql from "@/lib/db";
 import { getUser } from "@/lib/getUser";
 
-export const revalidate = 0;
-
 export async function GET() {
   const { user } = await getUser();
 

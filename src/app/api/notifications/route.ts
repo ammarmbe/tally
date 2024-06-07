@@ -1,8 +1,6 @@
 import sql from "@/lib/db";
 import sendPushNotification from "@/lib/sendNotifications";
 
-export const revalidate = 0;
-
 export async function GET() {
   const data = (await sql(
     "SELECT courses.name AS course_name, courses.id, course_times.start, course_times.room, subscriptions.subscription, courses.user_id FROM course_times JOIN courses ON course_times.course_id = courses.id JOIN subscriptions ON subscriptions.user_id = courses.user_id LEFT JOIN notifications ON notifications.course_id = courses.id WHERE course_times.day = TRIM(LOWER(to_char(CURRENT_DATE, 'Day'))) AND course_times.start >= (NOW() at time zone 'Africa/Cairo' - interval '1 hour')::time AND notifications.created_at::date != CURRENT_DATE",
