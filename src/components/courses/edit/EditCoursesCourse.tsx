@@ -26,7 +26,7 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Input } from "@/components/ui/input";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { DialogClose } from "@radix-ui/react-dialog";
+import { DialogClose, DialogDescription } from "@radix-ui/react-dialog";
 import { useState } from "react";
 
 var days = {
@@ -185,6 +185,7 @@ export default function EditCoursesCourse({
 }) {
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -307,6 +308,47 @@ export default function EditCoursesCourse({
     },
     onSuccess: () => {
       setDialogOpen(false);
+    },
+    onError: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["courses"],
+      });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationKey: ["delete-course", course.course_id],
+    mutationFn: async () => {
+      await fetch("/api/courses", {
+        method: "DELETE",
+        body: JSON.stringify({
+          id: course.course_id,
+        }),
+      });
+    },
+    onMutate: async () => {
+      queryClient.setQueryData(
+        ["courses"],
+        (
+          old:
+            | {
+                course_name: string;
+                course_id: string;
+                attended: string;
+                missed: string;
+                cancelled: string;
+                times: string[][];
+              }[]
+            | undefined,
+        ) => {
+          if (!old) return old;
+
+          return old.filter((course) => course.course_id !== course.course_id);
+        },
+      );
+    },
+    onSuccess: () => {
+      setDeleteOpen(false);
     },
     onError: () => {
       queryClient.invalidateQueries({
@@ -536,15 +578,53 @@ export default function EditCoursesCourse({
                       />
                     ))}
 
-                  <DialogFooter className="!mt-4">
-                    <DialogClose asChild>
-                      <Button variant="secondary" type="button">
-                        Cancel
+                  <DialogFooter className="!mt-4 flex flex-col-reverse gap-y-2 sm:flex-row sm:justify-between sm:space-x-2">
+                    <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="secondary"
+                          className="self-left"
+                          type="button"
+                        >
+                          Delete Course
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-h-[80vh] overflow-auto">
+                        <DialogHeader>
+                          <DialogTitle>Are you sure?</DialogTitle>
+                          <DialogDescription>
+                            This action cannot be undone.{" "}
+                            <span className="font-medium">
+                              This will permanently delete {course.course_name}.
+                            </span>
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="flex justify-end gap-2">
+                          <Button asChild variant="secondary">
+                            <DialogClose>Cancel</DialogClose>
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            disabled={deleteMutation.isPending}
+                            onClick={() => {
+                              deleteMutation.mutate();
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                    <div className="flex flex-col-reverse gap-y-2 sm:flex-row sm:justify-end sm:space-x-2">
+                      <DialogClose asChild>
+                        <Button variant="secondary" type="button">
+                          Cancel
+                        </Button>
+                      </DialogClose>
+                      <Button disabled={updateMutation.isPending} type="submit">
+                        Save
                       </Button>
-                    </DialogClose>
-                    <Button disabled={updateMutation.isPending} type="submit">
-                      Save
-                    </Button>
+                    </div>
                   </DialogFooter>
                 </form>
               </Form>

@@ -107,3 +107,20 @@ export async function PATCH(req: Request) {
 
   return new Response("OK");
 }
+
+export async function DELETE(req: Request) {
+  const { id } = await req.json();
+
+  const { user } = await getUser();
+
+  if (!user) {
+    return new Response(null, { status: 401 });
+  }
+
+  await sql("DELETE FROM courses WHERE id = $1 AND user_id = $2", [
+    id,
+    user.id,
+  ]);
+
+  return new Response("OK");
+}

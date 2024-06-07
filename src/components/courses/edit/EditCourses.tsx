@@ -1,9 +1,10 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { Link, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import Spinner from "../../Spinner";
 import { Button } from "../../ui/button";
 import EditCoursesCourse from "./EditCoursesCourse";
+import Link from "next/link";
 
 export default function EditCourses() {
   const { data, isLoading } = useQuery({

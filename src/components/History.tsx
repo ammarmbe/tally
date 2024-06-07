@@ -35,7 +35,7 @@ export default function History() {
       getNextPageParam: (lastPage) => {
         // convert date and start to epoch
         const last = lastPage[lastPage.length - 1];
-        const date = dayjs(last.date).format("YYYY-MM-DD");
+        const date = dayjs(last?.date).format("YYYY-MM-DD");
         const start = dayjs(`${date} 23:59:59`).valueOf();
 
         return start;

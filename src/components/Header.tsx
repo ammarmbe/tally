@@ -30,7 +30,6 @@ import {
 import { usePathname } from "next/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
-import Spinner from "./Spinner";
 
 const grenze = Grenze_Gotisch({ subsets: ["latin"] });
 
