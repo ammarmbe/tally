@@ -161,7 +161,12 @@ export default function Header() {
               <Menu className="size-6" />
             </Button>
           </SheetTrigger>
-          <SheetContent className="max-w-64">
+          <SheetContent
+            className="max-w-64"
+            onOpenAutoFocus={(e) => {
+              e.preventDefault();
+            }}
+          >
             <NavigationMenu className="mt-6 w-full max-w-full [&_div]:w-full">
               <NavigationMenuList className="w-full flex-col gap-y-1">
                 <NavigationMenuItem className="w-full">
