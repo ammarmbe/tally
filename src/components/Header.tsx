@@ -30,6 +30,8 @@ import {
 import { usePathname } from "next/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
+import { useEffect } from "react";
+import { registerServiceWorker, saveSubscription } from "@/lib/utils";
 
 const grenze = Grenze_Gotisch({ subsets: ["latin"] });
 
@@ -48,6 +50,12 @@ export default function Header() {
       };
     },
   });
+
+  useEffect(() => {
+    if (user?.user) {
+      subscribe(user.user.id);
+    }
+  }, []);
 
   return (
     <>
@@ -263,3 +271,26 @@ export default function Header() {
     </>
   );
 }
+
+const subscribe = async (userid: string | null | undefined) => {
+  if (!userid) return;
+
+  // check if a service worker is already registered
+  let swRegistration = await navigator.serviceWorker.getRegistration();
+
+  if (!swRegistration) {
+    swRegistration = await registerServiceWorker();
+  }
+
+  await window?.Notification.requestPermission();
+
+  try {
+    const options = {
+      applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+      userVisibleOnly: true,
+    };
+    const subscription = await swRegistration.pushManager.subscribe(options);
+
+    await saveSubscription(subscription, userid);
+  } catch (err) {}
+};
