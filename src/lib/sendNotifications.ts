@@ -37,7 +37,7 @@ const sendPushNotification = async (course: {
     payload,
   );
 
-  console.log(result);
+  return result;
 };
 
 export default sendPushNotification;
