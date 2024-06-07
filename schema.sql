@@ -31,3 +31,14 @@ CREATE TABLE entries (
     date DATE NOT NULL,
     type TEXT NOT NULL -- 'attended', 'cancelled', 'missed'
 );
+
+CREATE TABLE subscriptions (
+    user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    subscription TEXT NOT NULL
+);
+
+CREATE TABLE notifications (
+  id SERIAL PRIMARY KEY,
+  course_id TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);

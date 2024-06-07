@@ -371,8 +371,8 @@ export default function EditCoursesCourse({
           </div>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Pencil className="size-4" />
+              <Button variant="secondary" size="icon">
+                <Pencil className="size-5" />
               </Button>
             </DialogTrigger>
             <DialogContent className="max-h-[80vh] overflow-auto">
