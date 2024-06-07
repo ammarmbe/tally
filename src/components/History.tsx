@@ -9,37 +9,38 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 
 export default function History() {
-  const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["history"],
-    queryFn: async ({ pageParam }) => {
-      const response = await fetch(`/api/history?cursor=${pageParam}`);
-      return response.json() as Promise<
-        {
-          course_id: string;
-          entry_id: number;
-          date: string;
-          course_name: string;
-          day: string;
-          start: string;
-          room: string;
-          end: string;
-          attended: number;
-          missed: number;
-          status: string;
-        }[]
-      >;
-    },
+  const { data, isLoading, hasNextPage, fetchNextPage, refetch } =
+    useInfiniteQuery({
+      queryKey: ["history"],
+      queryFn: async ({ pageParam }) => {
+        const response = await fetch(`/api/history?cursor=${pageParam}`);
+        return response.json() as Promise<
+          {
+            course_id: string;
+            entry_id: number;
+            date: string;
+            course_name: string;
+            day: string;
+            start: string;
+            room: string;
+            end: string;
+            attended: number;
+            missed: number;
+            status: string;
+          }[]
+        >;
+      },
 
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => {
-      // convert date and start to epoch
-      const last = lastPage[lastPage.length - 1];
-      const date = dayjs(last.date).format("YYYY-MM-DD");
-      const start = dayjs(`${date} 23:59:59`).valueOf();
+      initialPageParam: 0,
+      getNextPageParam: (lastPage) => {
+        // convert date and start to epoch
+        const last = lastPage[lastPage.length - 1];
+        const date = dayjs(last.date).format("YYYY-MM-DD");
+        const start = dayjs(`${date} 23:59:59`).valueOf();
 
-      return start;
-    },
-  });
+        return start;
+      },
+    });
 
   if (isLoading)
     return (
@@ -88,6 +89,15 @@ export default function History() {
           </p>
         }
         className="flex flex-col gap-6 pb-4"
+        refreshFunction={refetch}
+        pullDownToRefresh
+        pullDownToRefreshThreshold={100}
+        pullDownToRefreshContent={
+          <h3 style={{ textAlign: "center" }}>&#8595; Pull down to refresh</h3>
+        }
+        releaseToRefreshContent={
+          <h3 style={{ textAlign: "center" }}>&#8593; Release to refresh</h3>
+        }
       >
         {Object.values(
           Object.groupBy(data.pages.flat(), (course) => course.date),

@@ -144,8 +144,8 @@ export default function Header() {
           ) : null}
         </div>
         <Sheet>
-          <SheetTrigger className="flex sm:hidden" asChild>
-            <Button size="icon" variant="ghost" name="Menu">
+          <SheetTrigger className="flex sm:hidden" id="Menu" asChild>
+            <Button size="icon" variant="ghost">
               <Menu className="size-6" />
             </Button>
           </SheetTrigger>
