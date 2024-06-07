@@ -52,7 +52,9 @@ export default function Header() {
   return (
     <>
       <header className="flex min-h-[4.5rem] w-full items-center justify-between p-4">
-        <h1 className={`text-4xl font-medium leading-none ${grenze.className}`}>
+        <h1
+          className={`text-4xl font-medium leading-none ${grenze.className} text-[#005531]`}
+        >
           <Link href="/">T</Link>
         </h1>
         {isLoading ? null : (
