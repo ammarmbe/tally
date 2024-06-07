@@ -249,20 +249,31 @@ export default function Header() {
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
-                <NavigationMenuItem className="w-full">
-                  <NavigationMenuLink
-                    onClick={async () => {
-                      await fetch("/api/logout", { cache: "no-cache" });
-                      queryClient.invalidateQueries({
-                        queryKey: ["user"],
-                      });
-                    }}
-                    className="group inline-flex h-10 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
-                  >
-                    <LogOut className="mr-2 size-4" />
-                    Log out
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+                {!user?.session ? (
+                  <NavigationMenuItem className="w-full">
+                    <NavigationMenuLink
+                      onClick={async () => {
+                        await fetch("/api/logout", { cache: "no-cache" });
+                        queryClient.invalidateQueries({
+                          queryKey: ["user"],
+                        });
+                      }}
+                      className="group inline-flex h-10 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+                    >
+                      <LogOut className="mr-2 size-4" />
+                      Log out
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                ) : (
+                  <NavigationMenuItem className="w-full">
+                    <Link href="/api/login" legacyBehavior passHref>
+                      <NavigationMenuLink className="group inline-flex h-10 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
+                        <Pencil className="mr-2 size-4" />
+                        Log in to save
+                      </NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
+                )}
               </NavigationMenuList>
             </NavigationMenu>
           </SheetContent>
