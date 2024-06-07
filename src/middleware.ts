@@ -3,7 +3,10 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
-  if (request.method === "GET") {
+  if (
+    request.method === "GET" ||
+    request.nextUrl.pathname === "/api/notifications"
+  ) {
     return NextResponse.next();
   }
   const originHeader = request.headers.get("Origin");
