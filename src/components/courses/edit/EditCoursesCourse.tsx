@@ -640,7 +640,7 @@ export default function EditCoursesCourse({
               {course.times
                 .map(
                   (time) =>
-                    `${time[0].slice(0, 3)}${time[3] ? ` (${time[3]})` : ""}`,
+                    `${time[0]?.slice(0, 3)}${time[3] ? ` (${time[3]})` : ""}`,
                 )
                 .join(", ")}
             </p>

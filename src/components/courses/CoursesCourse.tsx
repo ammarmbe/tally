@@ -109,7 +109,7 @@ export default function CoursesCourse({
               {course.times.map((time) => (
                 <div key={time[0]} className="flex flex-col">
                   <p className="capitalize">
-                    {time[0].slice(0, 3)}
+                    {time[0]?.slice(0, 3)}
                     {time[3] ? ` - Room ${time[3]}` : ""}
                   </p>
                   {time[1] && time[2] ? (

@@ -91,20 +91,19 @@ export async function PATCH(req: Request) {
     [data.id, user.id],
   );
 
-  Object.entries(data.times).forEach(async ([day, { start, end, room }]) => {
+  for await (const [day, { start, end, room }] of Object.entries(data.times)) {
     data.days.includes(day) &&
       (await sql(
-        `INSERT INTO course_times ((SELECT id FROM courses WHERE id = $1 AND user_id = $6), day, start, "end", room) VALUES ($1, $2, $3, $4, $5)`,
+        `INSERT INTO course_times (course_id, day, start, "end", room) VALUES ($1, $2, $3, $4, $5)`,
         [
           data.id,
           day,
           start ? start : null,
           end ? end : null,
           room ? room : null,
-          user.id,
         ],
       ));
-  });
+  }
 
   return new Response("OK");
 }
