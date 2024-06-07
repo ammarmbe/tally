@@ -16,7 +16,7 @@ export async function GET() {
   console.log("Courses to be sent notification:", data.length);
 
   for await (const course of data) {
-    await sendPushNotification(course, course.user_id);
+    await sendPushNotification(course);
   }
 
   return new Response(JSON.stringify(data.length));

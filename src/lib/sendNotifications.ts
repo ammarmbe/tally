@@ -1,34 +1,22 @@
 import webpush from "web-push";
-import sql from "./db";
 import dayjs from "dayjs";
 
-const sendPushNotification = async (
-  course: {
-    course_name: string;
-    id: string;
-    start: string;
-    room: string;
-    subscription: string;
-    user_id: string;
-  },
-  userid: string,
-) => {
+const sendPushNotification = async (course: {
+  course_name: string;
+  id: string;
+  start: string;
+  room: string;
+  subscription: string;
+  user_id: string;
+}) => {
   if (!course) {
     console.log("no course passed");
     return;
   }
 
-  if (!userid) {
-    console.log("no userid passed");
+  if (!course.subscription) {
+    console.log("no subscription passed");
     return;
-  }
-
-  const subscription = (
-    await sql("SELECT * FROM subscriptions WHERE userid = $1", [userid])
-  )[0];
-
-  if (!subscription) {
-    console.log("no subscription found");
   }
 
   const payload = JSON.stringify({
@@ -45,7 +33,7 @@ const sendPushNotification = async (
   );
 
   const result = await webpush.sendNotification(
-    subscription.subscription,
+    course.subscription as any,
     payload,
   );
 
