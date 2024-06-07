@@ -33,7 +33,7 @@ const sendPushNotification = async (course: {
   );
 
   const result = await webpush.sendNotification(
-    course.subscription as any,
+    JSON.parse(course.subscription),
     payload,
   );
 

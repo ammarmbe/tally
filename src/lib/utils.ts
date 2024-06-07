@@ -15,13 +15,3 @@ export function timeStringToFloat(time: string) {
 export const registerServiceWorker = async () => {
   return navigator.serviceWorker.register("/service.js");
 };
-
-export const saveSubscription = async (
-  subscription: PushSubscription,
-  userid: string,
-) => {
-  await fetch("/api/push", {
-    method: "POST",
-    body: JSON.stringify({ subscription, userid }),
-  });
-};

@@ -32,7 +32,7 @@ import { usePathname } from "next/navigation";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
 import { useEffect } from "react";
-import { registerServiceWorker, saveSubscription } from "@/lib/utils";
+import { registerServiceWorker } from "@/lib/utils";
 
 const grenze = Grenze_Gotisch({ subsets: ["latin"] });
 
@@ -305,6 +305,9 @@ const subscribe = async (userid: string | null | undefined) => {
     };
     const subscription = await swRegistration.pushManager.subscribe(options);
 
-    await saveSubscription(subscription, userid);
+    await fetch("/api/push", {
+      method: "POST",
+      body: JSON.stringify({ subscription, userid }),
+    });
   } catch (err) {}
 };
