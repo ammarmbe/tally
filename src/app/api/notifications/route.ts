@@ -19,5 +19,5 @@ export async function GET() {
     await sendPushNotification(course, course.user_id);
   });
 
-  return new Response("OK");
+  return new Response(JSON.stringify(data.length));
 }
