@@ -15,9 +15,9 @@ export async function GET() {
 
   console.log("Courses to be sent notification:", data.length);
 
-  data.forEach(async (course) => {
+  for await (const course of data) {
     await sendPushNotification(course, course.user_id);
-  });
+  }
 
   return new Response(JSON.stringify(data.length));
 }
