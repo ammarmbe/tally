@@ -33,7 +33,7 @@ const sendPushNotification = async (
 
   const payload = JSON.stringify({
     title: course.course_name,
-    body: `You have a class at ${dayjs(dayjs().format("YYY-MM-DD ") + course.start).format("hh:mm A")} in ${course.room}`,
+    body: `You have a class at ${dayjs(dayjs().format("YYY-MM-DD ") + course.start).format("hh:mm A")}${course.room ? ` in ${course.room}` : ""}`,
     icon: "/images/icon-192x192.png",
     badge: "/images/badge.png",
   });
