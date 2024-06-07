@@ -19,7 +19,7 @@ import {
   Plus,
   History,
 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Session, User } from "lucia";
 import {
   NavigationMenu,
@@ -30,11 +30,13 @@ import {
 import { usePathname } from "next/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
+import Spinner from "./Spinner";
 
 const grenze = Grenze_Gotisch({ subsets: ["latin"] });
 
 export default function Header() {
   const pathname = usePathname();
+  const queryClient = useQueryClient();
 
   const { data: user, isLoading } = useQuery({
     queryKey: ["user"],
@@ -54,95 +56,106 @@ export default function Header() {
         <h1 className={`text-4xl font-medium leading-none ${grenze.className}`}>
           <Link href="/">T</Link>
         </h1>
-        <div className="hidden items-center gap-3 sm:flex">
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <Link href="/courses" legacyBehavior passHref>
-                  <NavigationMenuLink
-                    className={`group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50 ${
-                      pathname === "/courses"
-                        ? "bg-accent text-accent-foreground"
-                        : "bg-background"
-                    }`}
-                  >
-                    Your courses
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/history" legacyBehavior passHref>
-                  <NavigationMenuLink
-                    className={`group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50 ${
-                      pathname === "/history"
-                        ? "bg-accent text-accent-foreground"
-                        : "bg-background"
-                    }`}
-                  >
-                    View history
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-              {!(isLoading ? null : user?.session) ? (
-                <>
-                  <NavigationMenuItem>
-                    <Link href="/courses/add" legacyBehavior passHref>
-                      <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
-                        Add course
-                      </NavigationMenuLink>
-                    </Link>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <Link href="/courses/edit" legacyBehavior passHref>
-                      <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
-                        Edit courses
-                      </NavigationMenuLink>
-                    </Link>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <Link href="/api/login" legacyBehavior passHref>
-                      <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
-                        Login to save
-                      </NavigationMenuLink>
-                    </Link>
-                  </NavigationMenuItem>
-                </>
-              ) : null}
-            </NavigationMenuList>
-          </NavigationMenu>
-          {isLoading ? null : user?.session ? (
-            <DropdownMenu modal={false}>
-              <DropdownMenuTrigger asChild>
-                <Avatar className="cursor-pointer">
-                  <AvatarImage src={user.user?.imageUrl} />
-                  <AvatarFallback>AE</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/courses/add" className="w-full">
-                    <Plus className="mr-2 size-4" />
-                    Add course
+        {isLoading ? null : (
+          <div className="hidden items-center gap-3 sm:flex">
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <Link href="/courses" legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={`group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50 ${
+                        pathname === "/courses"
+                          ? "bg-accent text-accent-foreground"
+                          : "bg-background"
+                      }`}
+                    >
+                      Your courses
+                    </NavigationMenuLink>
                   </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/courses/edit" className="w-full">
-                    <Pencil className="mr-2 size-4" />
-                    Edit courses
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link href="/history" legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={`group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50 ${
+                        pathname === "/history"
+                          ? "bg-accent text-accent-foreground"
+                          : "bg-background"
+                      }`}
+                    >
+                      View history
+                    </NavigationMenuLink>
                   </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/logout" className="w-full">
+                </NavigationMenuItem>
+                {!user?.session ? (
+                  <>
+                    <NavigationMenuItem>
+                      <Link href="/courses/add" legacyBehavior passHref>
+                        <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
+                          Add course
+                        </NavigationMenuLink>
+                      </Link>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                      <Link href="/courses/edit" legacyBehavior passHref>
+                        <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
+                          Edit courses
+                        </NavigationMenuLink>
+                      </Link>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                      <Link href="/api/login" legacyBehavior passHref>
+                        <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
+                          Login to save
+                        </NavigationMenuLink>
+                      </Link>
+                    </NavigationMenuItem>
+                  </>
+                ) : null}
+              </NavigationMenuList>
+            </NavigationMenu>
+            {user?.session ? (
+              <DropdownMenu modal={false}>
+                <DropdownMenuTrigger asChild>
+                  <Avatar className="cursor-pointer">
+                    <AvatarImage src={user.user?.imageUrl} />
+                    <AvatarFallback>AA</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/courses/add" className="w-full cursor-pointer">
+                      <Plus className="mr-2 size-4" />
+                      Add course
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href="/courses/edit"
+                      className="w-full cursor-pointer"
+                    >
+                      <Pencil className="mr-2 size-4" />
+                      Edit courses
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="w-full cursor-pointer"
+                    onClick={async () => {
+                      await fetch("/api/logout", { cache: "no-cache" });
+                      queryClient.invalidateQueries({
+                        queryKey: ["user"],
+                      });
+                    }}
+                  >
                     <LogOut className="mr-2 size-4" />
                     Log out
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : null}
-        </div>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : null}
+          </div>
+        )}
         <Sheet>
           <SheetTrigger className="flex sm:hidden" id="Menu" asChild>
             <Button size="icon" variant="ghost">
@@ -223,18 +236,18 @@ export default function Header() {
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem className="w-full">
-                  <Link href="/logout" legacyBehavior passHref>
-                    <NavigationMenuLink
-                      className={`group inline-flex h-10 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50 ${
-                        pathname === "/logout"
-                          ? "bg-accent text-accent-foreground"
-                          : "bg-background"
-                      }`}
-                    >
-                      <LogOut className="mr-2 size-4" />
-                      Log out
-                    </NavigationMenuLink>
-                  </Link>
+                  <NavigationMenuLink
+                    onClick={async () => {
+                      await fetch("/api/logout", { cache: "no-cache" });
+                      queryClient.invalidateQueries({
+                        queryKey: ["user"],
+                      });
+                    }}
+                    className="group inline-flex h-10 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+                  >
+                    <LogOut className="mr-2 size-4" />
+                    Log out
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>

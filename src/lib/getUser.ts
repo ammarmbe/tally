@@ -8,30 +8,25 @@ export const getUser = cache(async () => {
   const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
 
   if (!sessionId) {
-    const user = cookies().get("local_user")?.value;
+    const usr = cookies().get("local_user")?.value;
 
-    if (user) {
+    if (usr) {
       return {
         user: {
-          id: user,
+          id: usr,
           imageUrl: "https://singlecolorimage.com/get/d4d4d4/100x100",
         },
         session: null,
       };
     }
 
-    const id = nanoid(32);
-
-    await sql("INSERT INTO users (id) VALUES ($1)", [id]);
-
-    cookies().set("local_user", id, {
-      maxAge: 60 * 60 * 24 * 365,
-      path: "/",
-      sameSite: "lax",
-    });
+    const id = await createLocalUser();
 
     return {
-      user: null,
+      user: {
+        id: id,
+        imageUrl: "https://singlecolorimage.com/get/d4d4d4/100x100",
+      },
       session: null,
     };
   }
@@ -54,34 +49,70 @@ export const getUser = cache(async () => {
         sessionCookie.value,
         sessionCookie.attributes,
       );
+
+      const usr = cookies().get("local_user")?.value;
+
+      if (usr) {
+        return {
+          user: {
+            id: usr,
+            imageUrl: "https://singlecolorimage.com/get/d4d4d4/100x100",
+          },
+          session: null,
+        };
+      }
+
+      const id = await createLocalUser();
+
+      return {
+        user: {
+          id: id,
+          imageUrl: "https://singlecolorimage.com/get/d4d4d4/100x100",
+        },
+        session: null,
+      };
     }
   } catch {
     // Next.js throws error when attempting to set cookies when rendering page
   }
 
   if (!user) {
-    const user = cookies().get("local_user")?.value;
+    const usr = cookies().get("local_user")?.value;
 
-    if (user) {
+    if (usr) {
       return {
         user: {
-          id: user,
+          id: usr,
           imageUrl: "https://singlecolorimage.com/get/d4d4d4/100x100",
         },
         session: null,
       };
     }
 
-    const id = nanoid(32);
+    const id = await createLocalUser();
 
-    await sql("INSERT INTO users (id) VALUES ($1)", [id]);
-
-    cookies().set("local_user", id, {
-      maxAge: 60 * 60 * 24 * 365,
-      path: "/",
-      sameSite: "lax",
-    });
+    return {
+      user: {
+        id: id,
+        imageUrl: "https://singlecolorimage.com/get/d4d4d4/100x100",
+      },
+      session: null,
+    };
   }
 
   return { user, session };
 });
+
+async function createLocalUser() {
+  const id = nanoid(32);
+
+  await sql("INSERT INTO users (id) VALUES ($1)", [id]);
+
+  cookies().set("local_user", id, {
+    maxAge: 60 * 60 * 24 * 365,
+    path: "/",
+    sameSite: "lax",
+  });
+
+  return id;
+}
