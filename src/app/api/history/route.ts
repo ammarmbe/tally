@@ -14,7 +14,7 @@ export async function GET(req: Request) {
 
   if (cursor === "0") {
     const res = await sql(
-      "SELECT GREATEST(date + interval '1 days', (CURRENT_DATE at time zone 'Africa/Cairo')::date + interval '1 days') FROM entries JOIN courses ON courses.id = entries.course_id JOIN course_times ON course_times.course_id = courses.id AND LOWER(to_char(entries.date, 'Day')) = course_times.day WHERE user_id = $1 ORDER BY entries.date DESC, course_times.start DESC LIMIT 1",
+      "SELECT GREATEST(date + interval '1 days', (CURRENT_DATE at time zone 'Africa/Cairo')::date + interval '1 days') AS date FROM entries JOIN courses ON courses.id = entries.course_id JOIN course_times ON course_times.course_id = courses.id AND LOWER(to_char(entries.date, 'Day')) = course_times.day WHERE user_id = $1 ORDER BY entries.date DESC, course_times.start DESC LIMIT 1",
       [user.id],
     );
 

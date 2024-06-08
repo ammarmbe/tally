@@ -12,17 +12,22 @@ import {
 import { useEffect, useState } from "react";
 import { registerServiceWorker } from "@/lib/utils";
 import { Session, User } from "lucia";
+import { Button } from "./ui/button";
+import { Trash2 } from "lucide-react";
 
 export default function Settings() {
   const [notifications, setNotifications] = useState(false);
-  const [duration, setDuration] = useState(0);
+  const [durations, setDurations] = useState([15]);
 
   const { data, isLoading } = useQuery({
     queryKey: ["settings"],
     queryFn: async () => {
       const res = await fetch("/api/settings");
 
-      return (await res.json()) as number | null;
+      return (await res.json()) as {
+        notifications: boolean;
+        durations: number[];
+      };
     },
   });
 
@@ -41,10 +46,10 @@ export default function Settings() {
   const notificationsMutation = useMutation({
     mutationKey: ["settings"],
     mutationFn: async ({
-      duration,
+      durations,
       notifications,
     }: {
-      duration: number;
+      durations: number[];
       notifications: boolean;
     }) => {
       let subscription: PushSubscription | null = null;
@@ -55,24 +60,19 @@ export default function Settings() {
 
       await fetch("/api/settings", {
         method: "POST",
-        body: JSON.stringify({ duration, notifications, subscription }),
+        body: JSON.stringify({ durations, notifications, subscription }),
       });
     },
-    onMutate: ({ duration, notifications }) => {
-      setDuration(duration);
+    onMutate: ({ durations, notifications }) => {
+      setDurations(durations);
       setNotifications(notifications);
     },
   });
 
   useEffect(() => {
-    if (data !== undefined) {
-      if (data === null) {
-        setDuration(15);
-        setNotifications(false);
-      } else {
-        setDuration(data);
-        setNotifications(true);
-      }
+    if (data) {
+      setDurations(data.durations);
+      setNotifications(data.notifications);
     }
   }, [data]);
 
@@ -99,7 +99,7 @@ export default function Settings() {
           <Switch
             checked={notifications}
             onCheckedChange={(n) => {
-              notificationsMutation.mutate({ duration, notifications: n });
+              notificationsMutation.mutate({ durations, notifications: n });
             }}
           />
         </div>
@@ -114,23 +114,59 @@ export default function Settings() {
               Set when the notification should be sent
             </p>
           </div>
-          <Select
-            onValueChange={(v) => {
-              notificationsMutation.mutate({ duration: +v, notifications });
-            }}
-            value={duration.toString()}
-            disabled={!notifications}
-          >
-            <SelectTrigger className="w-[180px] disabled:opacity-100">
-              <SelectValue placeholder="Duration" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="15">15 minutes before</SelectItem>
-              <SelectItem value="30">30 minutes before</SelectItem>
-              <SelectItem value="45">45 minutes before</SelectItem>
-              <SelectItem value="60">1 hour before</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="flex flex-col gap-2">
+            {durations.map((d, i) => (
+              <div className="flex gap-2">
+                <Select
+                  key={i}
+                  onValueChange={(v) => {
+                    notificationsMutation.mutate({
+                      durations: durations.map((duration, j) =>
+                        i === j ? parseInt(v) : duration,
+                      ),
+                      notifications,
+                    });
+                  }}
+                  value={d.toString()}
+                  disabled={!notifications}
+                >
+                  <SelectTrigger className="w-[180px] disabled:opacity-100">
+                    <SelectValue placeholder="Duration" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="15">15 minutes before</SelectItem>
+                    <SelectItem value="30">30 minutes before</SelectItem>
+                    <SelectItem value="45">45 minutes before</SelectItem>
+                    <SelectItem value="60">1 hour before</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    notificationsMutation.mutate({
+                      durations: durations.filter((_, j) => i !== j),
+                      notifications,
+                    });
+                  }}
+                  size="icon"
+                >
+                  <Trash2 className="size-4" />
+                </Button>
+              </div>
+            ))}
+            <Button
+              variant="ghost"
+              onClick={() => {
+                notificationsMutation.mutate({
+                  durations: [...durations, 15],
+                  notifications,
+                });
+              }}
+              size="sm"
+            >
+              Add another time
+            </Button>
+          </div>
         </div>
       </div>
     </section>

@@ -1,4 +1,5 @@
 import sql from "@/lib/db";
+import { getUser } from "@/lib/getUser";
 import { NextResponse, NextRequest } from "next/server";
 import webpush, { PushSubscription } from "web-push";
 
@@ -9,17 +10,22 @@ webpush.setVapidDetails(
 );
 
 export async function POST(request: NextRequest) {
-  const { subscription, userid } = (await request.json()) as {
+  const { user } = await getUser();
+
+  if (!user) {
+    return new Response(null, { status: 401 });
+  }
+
+  const { subscription } = (await request.json()) as {
     subscription: PushSubscription;
-    userid: string;
   };
 
-  if (!subscription || !userid) return;
+  if (!subscription || !user.id) return;
 
-  await sql(
-    "INSERT INTO subscriptions (subscription, user_id) VALUES ($1, $2) ON CONFLICT (user_id) DO UPDATE SET subscription = $1",
-    [JSON.stringify(subscription), userid],
-  );
+  await sql("UPDATE users SET subscription = $1 WHERE id = $2", [
+    JSON.stringify(subscription),
+    user.id,
+  ]);
 
   return NextResponse.json("OK");
 }

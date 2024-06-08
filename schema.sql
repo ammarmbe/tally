@@ -1,6 +1,10 @@
 CREATE TABLE users (
     id TEXT PRIMARY KEY,
     image_url TEXT NOT NULL DEFAULT 'https://singlecolorimage.com/get/d4d4d4/100x100',
+    subscription TEXT,
+    notifications BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    durations INT[] NOT NULL DEFAULT '{15}'
 );
 
 CREATE TABLE sessions (
@@ -30,12 +34,6 @@ CREATE TABLE entries (
     course_id INT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
     date DATE NOT NULL,
     type TEXT NOT NULL -- 'attended', 'cancelled', 'missed'
-);
-
-CREATE TABLE subscriptions (
-    user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
-    subscription TEXT NOT NULL,
-    duration INT NOT NULL DEFAULT 15
 );
 
 CREATE TABLE notifications (
