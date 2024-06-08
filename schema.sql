@@ -39,5 +39,6 @@ CREATE TABLE entries (
 CREATE TABLE notifications (
   id SERIAL PRIMARY KEY,
   course_id TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  duration INT NOT NULL
 );
