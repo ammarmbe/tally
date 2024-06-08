@@ -34,7 +34,8 @@ CREATE TABLE entries (
 
 CREATE TABLE subscriptions (
     user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
-    subscription TEXT NOT NULL
+    subscription TEXT NOT NULL,
+    duration INT NOT NULL DEFAULT 15
 );
 
 CREATE TABLE notifications (

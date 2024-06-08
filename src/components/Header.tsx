@@ -19,6 +19,7 @@ import {
   Plus,
   History,
   LogIn,
+  Settings,
 } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Session, User } from "lucia";
@@ -113,6 +114,13 @@ export default function Header() {
                       </Link>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
+                      <Link href="/settings" legacyBehavior passHref>
+                        <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
+                          Settings
+                        </NavigationMenuLink>
+                      </Link>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
                       <Link href="/api/login" legacyBehavior passHref>
                         <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
                           Login to save
@@ -147,6 +155,12 @@ export default function Header() {
                     >
                       <Pencil className="mr-2 size-4" />
                       Edit courses
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/settings" className="w-full cursor-pointer">
+                      <Settings className="mr-2 size-4" />
+                      Settings
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem
@@ -247,6 +261,20 @@ export default function Header() {
                     >
                       <Pencil className="mr-2 size-4" />
                       Edit courses
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem className="w-full">
+                  <Link href="/settings" legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={`group inline-flex h-10 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50 ${
+                        pathname === "/settings"
+                          ? "bg-accent text-accent-foreground"
+                          : "bg-background"
+                      }`}
+                    >
+                      <Settings className="mr-2 size-4" />
+                      Settings
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
