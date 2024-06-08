@@ -11,7 +11,9 @@ export default function Dashboard() {
   const { data, isLoading } = useQuery({
     queryKey: ["dashboard"],
     queryFn: async () => {
-      const res = await fetch("/api/dashboard");
+      const res = await fetch(
+        `/api/dashboard?day=${new Date().toLocaleString("en-US", { weekday: "long" }).toLowerCase()}`,
+      );
 
       return (await res.json()) as {
         no_courses: boolean;
