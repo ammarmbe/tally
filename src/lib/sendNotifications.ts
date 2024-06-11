@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 
 const sendPushNotification = async (course: {
   course_name: string;
-  id: string;
+  course_id: string;
   start: string;
   room: string;
   subscription: string;
