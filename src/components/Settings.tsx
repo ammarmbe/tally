@@ -163,6 +163,8 @@ export default function Settings() {
                 });
               }}
               size="sm"
+              className="disabled:opacity-100"
+              disabled={durations.length === 4 || !notifications}
             >
               Add another time
             </Button>
