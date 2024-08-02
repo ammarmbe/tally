@@ -1,3 +1,376 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  @apply border-secondary outline-none;
+}
+
+*:disabled {
+  @apply cursor-not-allowed;
+}
+
+:root {
+  --gray-25: 240, 20%, 99%;
+  --gray-50: 210, 20%, 98%;
+  --gray-100: 216, 24%, 96%;
+  --gray-200: 218, 17%, 91%;
+  --gray-300: 217, 16%, 84%;
+  --gray-400: 218, 15%, 65%;
+  --gray-500: 221, 13%, 46%;
+  --gray-600: 216, 18%, 34%;
+  --gray-700: 218, 24%, 27%;
+  --gray-800: 215, 33%, 14%;
+  --gray-900: 220, 43%, 11%;
+  --gray-950: 222, 41%, 8%;
+
+  --error-25: 0, 100%, 99%;
+  --error-50: 5, 86%, 97%;
+  --error-100: 4, 93%, 94%;
+  --error-200: 5, 96%, 89%;
+  --error-300: 4, 96%, 80%;
+  --error-400: 4, 92%, 69%;
+  --error-500: 4, 86%, 58%;
+  --error-600: 4, 74%, 49%;
+  --error-700: 4, 76%, 40%;
+  --error-800: 4, 72%, 33%;
+  --error-900: 8, 65%, 29%;
+  --error-950: 8, 75%, 19%;
+
+  --warning-25: 42, 100%, 98%;
+  --warning-50: 45, 100%, 96%;
+  --warning-100: 44, 97%, 89%;
+  --warning-200: 44, 98%, 77%;
+  --warning-300: 42, 99%, 65%;
+  --warning-400: 39, 98%, 56%;
+  --warning-500: 34, 94%, 50%;
+  --warning-600: 28, 97%, 44%;
+  --warning-700: 22, 92%, 37%;
+  --warning-800: 19, 84%, 31%;
+  --warning-900: 18, 81%, 26%;
+  --warning-950: 17, 79%, 17%;
+
+  --brand-25: 142, 80%, 98%;
+  --brand-50: 145, 81%, 96%;
+  --brand-100: 141, 76%, 92%;
+  --brand-200: 144, 69%, 80%;
+  --brand-300: 148, 63%, 67%;
+  --brand-400: 150, 57%, 54%;
+  --brand-500: 152, 77%, 39%;
+  --brand-600: 153, 91%, 30%;
+  --brand-700: 155, 90%, 24%;
+  --brand-800: 155, 84%, 20%;
+  --brand-900: 156, 83%, 16%;
+  --brand-950: 157, 82%, 11%;
+
+  --background: 0, 0%, 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+
+  :root {
+    --gray-25: 0, 0%, 98%;
+    --gray-50: 240, 5%, 96%;
+    --gray-100: 180, 3%, 94%;
+    --gray-200: 240, 3%, 93%;
+    --gray-300: 225, 4%, 82%;
+    --gray-400: 225, 4%, 60%;
+    --gray-500: 220, 4%, 54%;
+    --gray-600: 224, 5%, 40%;
+    --gray-700: 223, 12%, 23%;
+    --gray-800: 221, 21%, 15%;
+    --gray-900: 221, 27%, 12%;
+    --gray-950: 222, 41%, 8%;
+
+    --background: 222, 41%, 8%;
+  }
+}
+
+@layer utilities {
+  /* TEXT */
+  .text-primary {
+    @apply text-gray-900 dark:text-gray-50;
+  }
+
+  .text-primary_success {
+    @apply text-[#102810] dark:text-[#fcfffb];
+  }
+
+  .text-primary_error {
+    @apply text-[#281010] dark:text-[#fff4f4];
+  }
+
+  .text-primary_on-brand {
+    @apply text-white dark:text-gray-50;
+  }
+
+  .text-secondary {
+    @apply text-gray-700 dark:text-gray-300;
+  }
+
+  .text-secondary_success {
+    @apply text-[#355534] dark:text-[#d9ddd6];
+  }
+
+  .text-secondary_error {
+    @apply text-[#553434] dark:text-[#d8c6c6];
+  }
+
+  .text-secondary.hover:hover:not(.active:active):not(:disabled) {
+    @apply text-gray-800 dark:text-gray-200;
+  }
+
+  .text-secondary_on-brand {
+    @apply text-brand-200 dark:text-gray-300;
+  }
+
+  .text-tertiary {
+    @apply text-gray-600 dark:text-gray-400;
+  }
+
+  .text-tertiary.hover:hover:not(.active:active):not(:disabled) {
+    @apply text-gray-700 dark:text-gray-300;
+  }
+
+  .text-tertiary_on-brand {
+    @apply text-brand-200 dark:text-gray-400;
+  }
+
+  .text-quaternary {
+    @apply text-gray-500 dark:text-gray-400;
+  }
+
+  .text-quaternary_on-brand {
+    @apply text-brand-300 dark:text-gray-400;
+  }
+
+  .text-disabled {
+    @apply text-gray-400;
+  }
+
+  .text-placeholder {
+    @apply text-gray-400;
+  }
+
+  .text-placeholder_subtle {
+    @apply text-gray-300 dark:text-gray-700;
+  }
+
+  .text-brand-primary {
+    @apply text-brand-900 dark:text-gray-50;
+  }
+
+  .text-brand_card {
+    @apply text-brand-600 dark:text-brand-400;
+  }
+
+  .text-brand-secondary {
+    @apply text-brand-700 dark:text-gray-300;
+  }
+
+  .text-brand-tertiary {
+    @apply text-brand-600 dark:text-gray-400;
+  }
+
+  .text-brand-tertiary_alt {
+    @apply text-brand-600 dark:text-gray-50;
+  }
+
+  .text-error-primary {
+    @apply text-error-600 dark:text-error-400;
+  }
+  .text-warning-primary {
+    @apply text-warning-600 dark:text-warning-400;
+  }
+
+  .text-success-primary {
+    @apply text-success-600 dark:text-success-400;
+  }
+
+  /* BORDER */
+  .border-primary {
+    @apply border-gray-300 dark:border-gray-700;
+  }
+
+  .border-secondary {
+    @apply border-gray-200 dark:border-gray-800;
+  }
+
+  .border-tertiary {
+    @apply border-gray-100 dark:border-gray-800;
+  }
+
+  .border-disabled {
+    @apply border-gray-300 dark:border-gray-700;
+  }
+
+  .border-disabled_subtle {
+    @apply border-gray-200 dark:border-gray-800;
+  }
+
+  .border-brand {
+    @apply border-brand-500 dark:border-brand-400;
+  }
+
+  .border-brand_alt {
+    @apply border-brand-600 dark:border-gray-700;
+  }
+
+  .border-error {
+    @apply border-error-500 dark:border-error-400;
+  }
+
+  .border-error-solid {
+    @apply border-error-600 dark:border-error-500;
+  }
+
+  .border-error_subtle {
+    @apply border-error-300 dark:border-error-600;
+  }
+
+  .border-success {
+    @apply border-brand-500 dark:border-brand-400;
+  }
+
+  .border-success-solid {
+    @apply border-brand-600 dark:border-brand-500;
+  }
+
+  /* CARD */
+
+  .border-error_card {
+    @apply border-error-600/40;
+  }
+
+  .border-success_card {
+    @apply border-brand-600/40;
+  }
+
+  .bg-error_card {
+    @apply bg-error-600/10;
+  }
+
+  .bg-success_card {
+    @apply bg-brand-600/10;
+  }
+
+  /* BACKGROUND */
+  .bg-primary {
+    @apply bg-white dark:bg-gray-950;
+  }
+
+  .bg-primary_alt {
+    @apply bg-white dark:bg-gray-900;
+  }
+
+  .bg-primary.hover:hover:not(.active:active):not(:disabled) {
+    @apply bg-gray-50 dark:bg-gray-800;
+  }
+
+  .bg-primary-solid {
+    @apply bg-gray-950 dark:bg-gray-900;
+  }
+
+  .bg-secondary {
+    @apply bg-gray-50 dark:bg-gray-900;
+  }
+
+  .bg-secondary_alt {
+    @apply bg-gray-50 dark:bg-gray-950;
+  }
+
+  .bg-secondary.hover:hover:not(.active:active):not(:disabled) {
+    @apply bg-gray-100 dark:bg-gray-800;
+  }
+
+  .bg-secondary_subtle {
+    @apply bg-gray-25 dark:bg-gray-900;
+  }
+
+  .bg-secondary-solid {
+    @apply bg-gray-600 dark:bg-gray-600;
+  }
+
+  .bg-tertiary {
+    @apply bg-gray-100 dark:bg-gray-800;
+  }
+
+  .bg-quaternary {
+    @apply bg-gray-200 dark:bg-gray-700;
+  }
+
+  .bg-active {
+    @apply bg-gray-50 dark:bg-gray-800;
+  }
+
+  .bg-disabled {
+    @apply bg-gray-100 dark:bg-gray-800;
+  }
+
+  .bg-disabled_subtle {
+    @apply bg-gray-50 dark:bg-gray-900;
+  }
+
+  .bg-overlay {
+    @apply bg-gray-950 dark:bg-gray-800;
+  }
+
+  .bg-brand-primary {
+    @apply bg-brand-50 dark:bg-brand-500;
+  }
+
+  .bg-brand-primary_alt {
+    @apply bg-brand-100 dark:bg-brand-600;
+  }
+
+  .bg-brand-solid {
+    @apply bg-brand-600;
+  }
+
+  .bg-brand-solid.hover:hover:not(.active:active):not(:disabled) {
+    @apply bg-brand-700 dark:bg-brand-500;
+  }
+
+  .bg-brand-section {
+    @apply bg-brand-800 dark:bg-gray-800;
+  }
+
+  .bg-brand-section_subtle {
+    @apply bg-brand-700 dark:bg-gray-950;
+  }
+
+  .bg-error-primary {
+    @apply bg-error-50 dark:bg-error-900/20;
+  }
+
+  .bg-error-secondary {
+    @apply bg-error-100 dark:bg-error-800/30;
+  }
+
+  .bg-error-solid {
+    @apply bg-error-600;
+  }
+
+  .bg-error_subtle {
+    @apply bg-error-500/10;
+  }
+
+  .bg-error-solid.hover:hover:not(.active:active):not(:disabled) {
+    @apply bg-error-700 dark:bg-error-500;
+  }
+
+  .bg-warning-primary {
+    @apply bg-warning-50 dark:bg-warning-500;
+  }
+
+  .bg-warning-secondary {
+    @apply bg-warning-100 dark:bg-warning-600;
+  }
+
+  .bg-warning-solid {
+    @apply bg-warning-600;
+  }
+}
