@@ -24,6 +24,7 @@ export default function Sidebar({
     <Drawer
       trigger={
         <button
+          id="Open sidebar"
           className={buttonStyles(
             {
               size: "sm",
@@ -32,7 +33,6 @@ export default function Sidebar({
             },
             "sm:hidden"
           )}
-          name="Open sidebar"
         >
           <Menu size={20} />
         </button>
