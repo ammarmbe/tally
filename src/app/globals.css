@@ -200,7 +200,7 @@
   }
 
   .border-tertiary {
-    @apply border-gray-100 dark:border-gray-800;
+    @apply border-gray-100 dark:border-gray-900;
   }
 
   .border-disabled {

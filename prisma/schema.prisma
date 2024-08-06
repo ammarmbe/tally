@@ -9,18 +9,26 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  id                     String          @id @default(cuid())
+  name                   String?
+  email                  String          @unique
+  emailVerified          DateTime?
+  image                  String?
+  attendanceAsPercentage Boolean?
+  countCancelledCourses  CountCancelled?
+  accounts               Account[]
+  sessions               Session[]
 
   createdAt                 DateTime                   @default(now())
   updatedAt                 DateTime                   @updatedAt
   notificationSubscriptions NotificationSubscription[]
   courses                   Course[]
+}
+
+enum CountCancelled {
+  NONE
+  ATTENDED
+  MISSED
 }
 
 model Account {
@@ -73,12 +81,13 @@ model NotificationSubscription {
 }
 
 model Course {
-  id        String    @id
-  title     String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  userId    String
+  id           String    @id
+  name         String
+  abbreviation String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+  userId       String
 
   user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   courseTimes       CourseTime[]
@@ -86,29 +95,28 @@ model Course {
 }
 
 model CourseTime {
-  id        String    @id
+  id        String   @id
   courseId  String
   dayOfWeek Int
-  startTime DateTime? @db.Time
-  endTime   DateTime? @db.Time
+  startTime String?
+  endTime   String?
   room      String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   course Course @relation(references: [id], fields: [courseId], onDelete: Cascade)
 }
 
 model CourseAttendance {
-  id        String    @id
+  id        String   @id
   courseId  String
   status    Status
-  startTime DateTime? @db.Time
-  endTime   DateTime? @db.Time
+  startTime String?
+  endTime   String?
   room      String?
-  date      DateTime  @db.Date
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  date      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 

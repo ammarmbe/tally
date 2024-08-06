@@ -1,105 +1,50 @@
-"use client";
-
-import { useUser } from "@/utils/client";
-import queryKeys from "@/utils/query-keys";
 import buttonStyles from "@/utils/styles/button";
-import { TCourseTime } from "@/utils/types";
-import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { BookMinus, Plus } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import Course from "./course";
-import Loading from "./loading";
 
 export default function Page() {
-  const user = useUser();
-
-  const { data, isLoading } = useQuery({
-    queryKey: queryKeys.courses(dayjs().day()),
-    queryFn: async () => {
-      const response = await fetch(`/api/courses/${dayjs().day()}`);
-
-      if (response.status === 404) {
-        return null;
-      }
-
-      if (!response.ok) {
-        throw new Error("An error occurred while fetching the data.");
-      }
-
-      return response.json() as Promise<TCourseTime[]>;
-    }
-  });
-
-  if (data === null) {
-    return (
-      <div className="flex flex-grow flex-col items-center justify-center gap-2">
-        <h2 className="text-text-md font-semibold md:text-text-lg">
-          No courses found.
-        </h2>
-        <p className="text-secondary text-text-md">
-          You have not added any courses yet.
-        </p>
-        <Link
-          href="/courses/add"
-          className={buttonStyles(
-            {
-              size: "sm",
-              variant: "primary"
-            },
-            "mt-4"
-          )}
-        >
-          <Plus size={16} /> Add course
-        </Link>
-      </div>
-    );
-  }
-
-  if (data && !data.length) {
-    return (
-      <div className="flex flex-grow flex-col items-center justify-center gap-2">
-        <h2 className="text-text-md font-semibold md:text-text-lg">
-          No courses for today! 🎉
-        </h2>
-        <p className="text-secondary text-text-md">
-          Enjoy your day off{user?.name ? `, ${user.name.split(" ")[0]}` : ""}.
-        </p>
-        <Link
-          href="/courses"
-          className={buttonStyles(
-            {
-              size: "sm",
-              variant: "primary"
-            },
-            "mt-4"
-          )}
-        >
-          <BookMinus size={16} /> View courses
-        </Link>
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
-    <div
-      style={{
-        gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))"
-      }}
-      className="grid gap-4 p-8"
-    >
-      {data?.map((course) => (
-        <Course
-          key={course.id}
-          course={course}
-          user={user}
-          date={dayjs().toDate()}
-        />
-      ))}
-    </div>
+    <>
+      <div className="relative flex h-dvh flex-grow flex-col overflow-x-hidden">
+        <div className="flex h-dvh flex-none flex-col">
+          <div className="flex flex-none items-center justify-center pt-8">
+            <Image src="/logo.svg" alt="Tally logo" height={32} width={23} />
+          </div>
+          <div className="flex flex-grow flex-col items-center justify-center gap-5 px-5 pb-[35vh] text-center">
+            <h1 className="text-display-sm font-semibold sm:text-display-lg">
+              Effortlessly Track and Manage Attendance with Tally
+            </h1>
+            <p className="text-secondary text-text-lg sm:text-text-xl">
+              Tally is a simple attendance tracker that helps you keep track of
+              attendance for your courses and classes.
+            </p>
+            <Link
+              href="/"
+              className={buttonStyles(
+                {
+                  size: "md",
+                  variant: "primary"
+                },
+                "mt-3"
+              )}
+            >
+              Go to app
+            </Link>
+          </div>
+          <div className="absolute right-1/2 top-full h-[90vh] w-[69vh] -translate-y-[40%] translate-x-1/2 sm:right-0 sm:top-1/2 sm:translate-x-[calc(40%-5vw)]">
+            <Image src="/logo.svg" alt="Tally logo" fill />
+          </div>
+        </div>
+        <footer className="text-tertiary p-2 pt-[70vh] text-center text-text-sm">
+          <p>
+            &copy; {new Date().getFullYear()} Tally. All rights reserved.{" "}
+            <Link className="underline underline-offset-2" href="/privacy">
+              Privacy policy
+            </Link>
+            .
+          </p>
+        </footer>
+      </div>
+    </>
   );
 }

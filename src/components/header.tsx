@@ -1,7 +1,6 @@
 "use client";
 
 import { useUser } from "@/utils/client";
-import { Grenze_Gotisch } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,15 +8,12 @@ import Dropdown from "./dropdown";
 import buttonStyles from "@/utils/styles/button";
 import { LogOut, Settings } from "lucide-react";
 import { signOut } from "next-auth/react";
-
-const grenze = Grenze_Gotisch({
-  weight: ["500"],
-  subsets: ["latin"]
-});
+import dayjs from "dayjs";
+import Sidebar from "./sidebar";
 
 const links = [
   {
-    href: "/home",
+    href: `/date/${dayjs().format("YYYY-MM-DD")}`,
     text: "Home"
   },
   {
@@ -38,16 +34,14 @@ export default function Header() {
   const pathname = usePathname();
   const user = useUser();
 
-  if (pathname === "/login") return;
+  if (pathname === "/login" || pathname === "/home" || pathname === "/privacy")
+    return;
 
   return (
-    <header className="flex w-full flex-none items-center justify-center border-b sm:h-20">
-      <div className="flex max-w-7xl flex-grow items-center justify-between px-8 py-4">
+    <header className="flex h-[4.375rem] w-full flex-none items-center justify-center border-b sm:h-20">
+      <div className="flex max-w-7xl flex-grow items-center justify-between p-4 py-4 sm:px-8">
         <div className="flex items-center gap-6">
-          <Link
-            href="/"
-            className={`text-display-lg font-medium text-[#005531] ${grenze.className}`}
-          >
+          <Link href="/">
             <Image src="/logo.svg" alt="Tally logo" height={32} width={23} />
           </Link>
           <nav className="hidden items-center gap-1 sm:flex">
@@ -67,40 +61,43 @@ export default function Header() {
           </nav>
         </div>
         {user ? (
-          <Dropdown
-            trigger={
-              <Image
-                src={user.image || "/avatar.svg"}
-                alt={`${user.name}'s profile picture`}
-                width={40}
-                height={40}
-                quality={100}
-                className="hidden cursor-pointer rounded-full transition-all active:shadow-focus-ring sm:block"
-              />
-            }
-            className="overflow-hidden"
-          >
-            <Link
-              href="/settings"
-              className={buttonStyles({
-                size: "sm",
-                variant: "tertiary",
-                dropdown: true
-              })}
+          <>
+            <Sidebar links={links} user={user} />
+            <Dropdown
+              trigger={
+                <Image
+                  src={user.image || "/avatar.svg"}
+                  alt={`${user.name}'s profile picture`}
+                  width={40}
+                  height={40}
+                  quality={100}
+                  className="hidden cursor-pointer rounded-full transition-all active:shadow-focus-ring sm:block"
+                />
+              }
+              className="overflow-hidden"
             >
-              <Settings size={16} /> Settings
-            </Link>
-            <button
-              className={buttonStyles({
-                size: "sm",
-                variant: "tertiary",
-                dropdown: true
-              })}
-              onClick={() => signOut()}
-            >
-              <LogOut size={16} /> Sign out
-            </button>
-          </Dropdown>
+              <Link
+                href="/settings"
+                className={buttonStyles({
+                  size: "sm",
+                  variant: "tertiary",
+                  dropdown: true
+                })}
+              >
+                <Settings size={16} /> Settings
+              </Link>
+              <button
+                className={buttonStyles({
+                  size: "sm",
+                  variant: "tertiary",
+                  dropdown: true
+                })}
+                onClick={() => signOut()}
+              >
+                <LogOut size={16} /> Sign out
+              </button>
+            </Dropdown>
+          </>
         ) : null}
       </div>
     </header>

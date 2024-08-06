@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import Google from "next-auth/providers/google";
 import prisma from "./db";
+import { $Enums } from "@prisma/client";
 
 declare module "next-auth" {
   interface User {
@@ -10,7 +11,7 @@ declare module "next-auth" {
     email?: string | null;
     image?: string | null;
     attendanceAsPercentage: boolean;
-    countCancelledCourses: boolean;
+    countCancelledCourses: $Enums.CountCancelled;
   }
 }
 

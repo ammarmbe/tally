@@ -1,14 +1,22 @@
 import { auth } from "@/utils/auth";
 import prisma from "@/utils/db";
 import { $Enums } from "@prisma/client";
+import dayjs from "dayjs";
 import { customAlphabet } from "nanoid";
+import * as v from "valibot";
 
 const alphabet =
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const nanoid = customAlphabet(alphabet, 12);
 
+const schema = v.object({
+  status: v.picklist(["ATTENDED", "MISSED", "CANCELLED"]),
+  date: v.string(),
+  courseId: v.string()
+});
+
 export async function POST(req: Request) {
-  let {
+  const {
     status,
     date,
     courseId
@@ -19,26 +27,27 @@ export async function POST(req: Request) {
   } = await req.json();
   const session = await auth();
 
-  date = new Date(date);
+  try {
+    v.parse(schema, { status, date, courseId });
+  } catch (error) {
+    return new Response(null, { status: 400 });
+  }
 
   if (!session?.user) {
     return new Response(null, { status: 401 });
   }
 
-  if (!["ATTENDED", "MISSED", "CANCELLED"].includes(status) || !date) {
-    return new Response(null, { status: 400 });
-  }
-
   const course = await prisma.course.findUnique({
     where: {
       id: courseId,
-      userId: session.user.id
+      userId: session.user.id,
+      deletedAt: null
     },
     select: {
       id: true,
       courseTimes: {
         where: {
-          dayOfWeek: date.getDay()
+          dayOfWeek: dayjs(date).day()
         },
         select: {
           startTime: true,

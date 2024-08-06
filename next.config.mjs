@@ -6,6 +6,10 @@ const nextConfig = {
         hostname: "lh3.googleusercontent.com"
       }
     ]
+  },
+  experimental: {
+    reactCompiler: true,
+    ppr: true
   }
 };
 

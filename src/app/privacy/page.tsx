@@ -1,9 +1,15 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Page() {
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col px-8">
-      <h1 className="pt-8 text-display-xs font-semibold md:text-display-sm">
+    <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col p-4 sm:px-8">
+      <div className="flex flex-none items-center justify-center py-8">
+        <Link href="/">
+          <Image src="/logo.svg" alt="Tally logo" height={32} width={23} />
+        </Link>
+      </div>
+      <h1 className="pt-4 text-display-xs font-semibold sm:pt-8 md:text-display-sm">
         Privacy Policy
       </h1>
       <p className="pt-4 text-text-lg font-medium">
@@ -106,7 +112,7 @@ export default function Page() {
         data practices, please contact us at:
       </p>
 
-      <p className="pt-8">
+      <p className="pb-8 pt-4 sm:pt-8">
         <span className="font-semibold">Tally</span>
         <br />
         <Link href="mailto:ammarelbehery04@gmail.com" className="mt-2">

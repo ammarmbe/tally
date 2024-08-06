@@ -13,7 +13,7 @@ export default function Modal({
   description,
   saveButton,
   cancelButton,
-  action
+  onSubmit
 }: {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -23,8 +23,10 @@ export default function Modal({
   description?: ReactNode;
   saveButton?: ReactNode;
   cancelButton?: ReactNode;
-  action?: (payload: FormData) => void;
+  onSubmit?: () => void;
 }) {
+  const Component = onSubmit ? "form" : "div";
+
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
@@ -35,11 +37,11 @@ export default function Modal({
           )}
         />
         <Dialog.Content className="group absolute inset-0 flex items-center justify-center">
-          <form
-            action={action}
+          <Component
+            onSubmit={onSubmit}
             className={twMerge(
               "bg-primary relative z-20 flex h-fit w-full max-w-[calc(100dvw-4rem)] flex-col gap-8 rounded-xl p-6 shadow-xl md:max-w-96",
-              "transition-all group-data-[state=open]:animate-in group-data-[state=closed]:animate-out group-data-[state=closed]:fade-out-0 group-data-[state=open]:fade-in-0"
+              "max-h-[70vh] overflow-auto transition-all group-data-[state=open]:animate-in group-data-[state=closed]:animate-out group-data-[state=closed]:fade-out-0 group-data-[state=open]:fade-in-0"
             )}
           >
             <div className="flex flex-col gap-1">
@@ -57,36 +59,40 @@ export default function Modal({
                   <X size={20} />
                 </Dialog.Close>
               </div>
-              <Dialog.Description className="text-sm text-tertiary">
-                {description}
-              </Dialog.Description>
+              {description ? (
+                <Dialog.Description className="text-sm text-tertiary">
+                  {description}
+                </Dialog.Description>
+              ) : null}
             </div>
             {children}
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {cancelButton ?? (
-                <Dialog.Close asChild>
+            {cancelButton !== null && saveButton !== null ? (
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                {cancelButton ?? (
+                  <Dialog.Close asChild>
+                    <button
+                      className={buttonStyles({
+                        size: "md",
+                        variant: "secondary"
+                      })}
+                    >
+                      Cancel
+                    </button>
+                  </Dialog.Close>
+                )}
+                {saveButton ?? (
                   <button
                     className={buttonStyles({
                       size: "md",
-                      variant: "secondary"
+                      variant: "primary"
                     })}
                   >
-                    Cancel
+                    Save
                   </button>
-                </Dialog.Close>
-              )}
-              {saveButton ?? (
-                <button
-                  className={buttonStyles({
-                    size: "md",
-                    variant: "primary"
-                  })}
-                >
-                  Save
-                </button>
-              )}
-            </div>
-          </form>
+                )}
+              </div>
+            ) : null}
+          </Component>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

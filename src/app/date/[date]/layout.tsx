@@ -1,0 +1,35 @@
+import queryKeys from "@/utils/query-keys";
+import { TCourseTime } from "@/utils/types";
+import { queryClient } from "@/utils/query-client";
+import type { ReactNode } from "react";
+import dayjs from "dayjs";
+
+export default async function Layout({
+  children,
+  params
+}: {
+  children: ReactNode;
+  params: { date: string };
+}) {
+  await queryClient.prefetchQuery({
+    queryKey: queryKeys.courses.date(params.date),
+    queryFn: async () => {
+      const res = await fetch(`/api/courses/date/${params.date}`);
+
+      if (!res.ok) {
+        throw new Error("An error occurred while fetching the data.");
+      }
+
+      return res.json() as Promise<TCourseTime[]>;
+    }
+  });
+
+  return (
+    <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col">
+      <h1 className="p-4 pb-0 text-display-xs font-semibold sm:p-8 sm:pb-0 md:text-display-sm">
+        {dayjs(params.date).format("dddd, MMMM D, YYYY")}
+      </h1>
+      {children}
+    </main>
+  );
+}

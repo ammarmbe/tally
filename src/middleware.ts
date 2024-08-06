@@ -1,6 +1,11 @@
 import { auth } from "@/utils/auth";
+import { NextResponse } from "next/server";
 
 export default auth((req) => {
+  if (req.nextUrl.pathname === "/home" || req.nextUrl.pathname === "/privacy") {
+    return NextResponse.next();
+  }
+
   if (!req.auth && req.nextUrl.pathname !== "/login") {
     const newUrl = new URL("/login", req.nextUrl.origin);
 
