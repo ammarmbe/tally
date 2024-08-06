@@ -17,6 +17,8 @@ export default auth((req) => {
 
     return Response.redirect(newUrl);
   }
+
+  return NextResponse.next();
 });
 
 export const config = {
