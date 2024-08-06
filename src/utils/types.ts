@@ -1,15 +1,12 @@
-import { $Enums } from "@prisma/client";
-
 export type TCourseTime = {
-  attended: number;
-  missed: number;
-  cancelled: number;
   id: string;
+  attended: boolean | null;
+  total_attended: number;
+  total_missed: number;
   dayOfWeek: number;
-  room: string | null;
-  status: $Enums.Status | "";
   startTime: string | null;
   endTime: string | null;
+  room: string | null;
   attendance: {
     label: string;
     percentage: number;
@@ -17,17 +14,19 @@ export type TCourseTime = {
   course: {
     id: string;
     name: string;
-    abbreviation: string;
+    abbreviation: string | null;
+    courseAttendances: {
+      attended: boolean;
+    }[];
   };
 };
 
 export type TCourse = {
-  attended: number;
-  missed: number;
-  cancelled: number;
   id: string;
   name: string;
-  abbreviation: string;
+  abbreviation: string | null;
+  total_attended: number;
+  total_missed: number;
   attendance: {
     label: string;
     percentage: number;
@@ -44,7 +43,7 @@ export type TCourse = {
 export type TCourseHistory = {
   id: string;
   courseId: string;
-  status: $Enums.Status | undefined;
+  attended: boolean;
   title: string;
   room: string | null;
   date: string;

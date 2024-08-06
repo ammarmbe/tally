@@ -1,6 +1,5 @@
 import { auth } from "@/utils/auth";
 import prisma from "@/utils/db";
-import { $Enums } from "@prisma/client";
 import dayjs from "dayjs";
 import { customAlphabet } from "nanoid";
 import * as v from "valibot";
@@ -10,25 +9,25 @@ const alphabet =
 const nanoid = customAlphabet(alphabet, 12);
 
 const schema = v.object({
-  status: v.picklist(["ATTENDED", "MISSED", "CANCELLED"]),
+  attended: v.boolean(),
   date: v.string(),
   courseId: v.string()
 });
 
 export async function POST(req: Request) {
   const {
-    status,
+    attended,
     date,
     courseId
   }: {
-    status: $Enums.Status;
-    date: string | Date;
+    attended: boolean;
+    date: string;
     courseId: string;
   } = await req.json();
   const session = await auth();
 
   try {
-    v.parse(schema, { status, date, courseId });
+    v.parse(schema, { attended, date, courseId });
   } catch (error) {
     return new Response(null, { status: 400 });
   }
@@ -71,7 +70,7 @@ export async function POST(req: Request) {
     }
   });
 
-  if (attendance && attendance.status === status) {
+  if (attendance && attendance.attended === attended) {
     await prisma.courseAttendance.delete({
       where: {
         courseId_date: {
@@ -89,7 +88,7 @@ export async function POST(req: Request) {
         }
       },
       create: {
-        status,
+        attended,
         date,
         startTime: course.courseTimes[0]?.startTime,
         endTime: course.courseTimes[0]?.endTime,
@@ -98,7 +97,7 @@ export async function POST(req: Request) {
         id: nanoid()
       },
       update: {
-        status
+        attended
       }
     });
   }

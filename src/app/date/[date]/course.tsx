@@ -30,18 +30,18 @@ export default function Course({
   const { toast } = useToast();
 
   const attendanceMutation = useMutation({
-    mutationFn: async (status: "ATTENDED" | "MISSED" | "CANCELLED") => {
+    mutationFn: async (attended: boolean) => {
       const res = await fetch(`/api/courses/attendance`, {
         method: "POST",
-        body: JSON.stringify({ status, date, courseId: course.course.id })
+        body: JSON.stringify({ attended, date, courseId: course.course.id })
       });
 
       if (!res.ok) {
         throw new Error("An error occurred while updating the attendance.");
       }
     },
-    onMutate: async (status) => {
-      const newStatus = course.status === status ? "" : status;
+    onMutate: async (attended) => {
+      const newStatus = course.attended === attended ? undefined : attended;
 
       queryClient.setQueryData<TCourseTime[]>(
         queryKeys.courses.date(date),
@@ -51,40 +51,32 @@ export default function Course({
               return c;
             }
 
-            const attended =
-              newStatus === "ATTENDED" && c.status !== "ATTENDED"
-                ? c.attended + 1
-                : newStatus !== "ATTENDED" && c.status === "ATTENDED"
-                  ? c.attended - 1
-                  : c.attended;
-            const missed =
-              newStatus === "MISSED" && c.status !== "MISSED"
-                ? c.missed + 1
-                : newStatus !== "MISSED" && c.status === "MISSED"
-                  ? c.missed - 1
-                  : c.missed;
-            const cancelled =
-              newStatus === "CANCELLED" && c.status !== "CANCELLED"
-                ? c.cancelled + 1
-                : newStatus !== "CANCELLED" && c.status === "CANCELLED"
-                  ? c.cancelled - 1
-                  : c.cancelled;
+            const total_attended =
+              newStatus === true && c.attended !== true
+                ? c.total_attended + 1
+                : newStatus !== true && c.attended === true
+                  ? c.total_attended - 1
+                  : c.total_attended;
+
+            const total_missed =
+              newStatus === false && c.attended !== false
+                ? c.total_missed + 1
+                : newStatus !== false && c.attended === false
+                  ? c.total_missed - 1
+                  : c.total_missed;
 
             const attendance = calculatePercentage(
-              attended,
-              missed,
-              cancelled,
-              user?.countCancelledCourses,
+              total_attended,
+              total_missed,
               user?.attendanceAsPercentage
             );
 
             return {
               ...c,
-              status: newStatus,
+              attended: newStatus ?? null,
               attendance,
-              attended,
-              missed,
-              cancelled
+              total_attended,
+              total_missed
             };
           })
       );
@@ -105,13 +97,11 @@ export default function Course({
   return (
     <div
       className={`flex h-full flex-col rounded-xl border p-4 shadow-xs transition-all ${
-        course.status === "ATTENDED"
+        course.attended === true
           ? "bg-success_card border-success_card text-secondary_success"
-          : course.status === "MISSED"
+          : course.attended === false
             ? "bg-error_card border-error_card text-secondary_error"
-            : course.status === "CANCELLED"
-              ? "bg-secondary_subtle text-secondary border-primary"
-              : "text-secondary"
+            : "text-secondary"
       }`}
     >
       <div className="flex flex-grow justify-between gap-5">
@@ -120,9 +110,9 @@ export default function Course({
             <h2 className="text-text-lg font-semibold md:text-text-xl">
               <span
                 className={
-                  course.status === "ATTENDED"
+                  course.attended === true
                     ? "text-primary_success"
-                    : course.status === "MISSED"
+                    : course.attended === false
                       ? "text-primary_error"
                       : "text-primary"
                 }
@@ -175,41 +165,28 @@ export default function Course({
           {course.attendance.label}
         </div>
       </div>
-      <div className="mt-4 flex flex-col gap-2">
-        <div className="grid grid-cols-2 gap-2">
-          <button
-            className={twMerge(
-              "flex h-fit items-center justify-center gap-2 rounded-md border px-3 py-2 !text-text-sm font-semibold transition-all active:shadow-focus-ring-gray",
-              course.status === "CANCELLED"
-                ? "border-transparent bg-gray-900 text-gray-100 hover:bg-gray-700 active:bg-gray-900 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300 dark:active:bg-gray-100"
-                : "hover:bg-secondary text-secondary hover:text-primary active:bg-primary bg-primary hover:border-primary"
-            )}
-            onClick={() => attendanceMutation.mutate("CANCELLED")}
-          >
-            Cancelled
-          </button>
-          <button
-            className={twMerge(
-              "flex h-fit items-center justify-center gap-2 rounded-md border px-3 py-2 !text-text-sm font-semibold transition-all active:shadow-focus-ring-error",
-              course.status === "MISSED"
-                ? "bg-error-solid hover text-primary border-transparent"
-                : "hover:bg-error_card text-secondary hover:text-error-primary hover:border-error_card active:bg-primary bg-primary"
-            )}
-            onClick={() => attendanceMutation.mutate("MISSED")}
-          >
-            Missed
-          </button>
-        </div>
+      <div className="mt-4 grid grid-cols-2 gap-2">
         <button
           className={twMerge(
             "flex h-fit items-center justify-center gap-2 rounded-md border px-3 py-2 !text-text-sm font-semibold transition-all active:shadow-focus-ring",
-            course.status === "ATTENDED"
+            course.attended === true
               ? "bg-brand-solid hover text-primary border-transparent"
               : "hover:bg-success_card text-secondary hover:text-brand_card hover:border-success_card active:bg-primary bg-primary"
           )}
-          onClick={() => attendanceMutation.mutate("ATTENDED")}
+          onClick={() => attendanceMutation.mutate(true)}
         >
           Attended
+        </button>
+        <button
+          className={twMerge(
+            "flex h-fit items-center justify-center gap-2 rounded-md border px-3 py-2 !text-text-sm font-semibold transition-all active:shadow-focus-ring-error",
+            course.attended === false
+              ? "bg-error-solid hover text-primary border-transparent"
+              : "hover:bg-error_card text-secondary hover:text-error-primary hover:border-error_card active:bg-primary bg-primary"
+          )}
+          onClick={() => attendanceMutation.mutate(false)}
+        >
+          Missed
         </button>
       </div>
     </div>

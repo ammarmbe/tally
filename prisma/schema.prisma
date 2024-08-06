@@ -9,26 +9,21 @@ datasource db {
 }
 
 model User {
-  id                     String          @id @default(cuid())
-  name                   String?
-  email                  String          @unique
-  emailVerified          DateTime?
-  image                  String?
-  attendanceAsPercentage Boolean?
-  countCancelledCourses  CountCancelled?
-  accounts               Account[]
-  sessions               Session[]
+  id                        String    @id @default(cuid())
+  name                      String?
+  email                     String    @unique
+  emailVerified             DateTime?
+  image                     String?
+  attendanceAsPercentage    Boolean   @default(true)
+  upcomingClassNotification Int       @default(0) // 0, 15, 30, 45, 60, 120
+  lowAttendanceNotification Int       @default(0) // 0, 50, 55, 60, 65, 70, 75, 80
+  accounts                  Account[]
+  sessions                  Session[]
 
   createdAt                 DateTime                   @default(now())
   updatedAt                 DateTime                   @updatedAt
   notificationSubscriptions NotificationSubscription[]
   courses                   Course[]
-}
-
-enum CountCancelled {
-  NONE
-  ATTENDED
-  MISSED
 }
 
 model Account {
@@ -110,7 +105,7 @@ model CourseTime {
 model CourseAttendance {
   id        String   @id
   courseId  String
-  status    Status
+  attended  Boolean
   startTime String?
   endTime   String?
   room      String?
@@ -121,10 +116,4 @@ model CourseAttendance {
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@unique([courseId, date])
-}
-
-enum Status {
-  ATTENDED
-  MISSED
-  CANCELLED
 }

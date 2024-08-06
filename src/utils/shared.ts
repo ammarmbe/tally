@@ -1,16 +1,9 @@
 export function calculatePercentage(
   attended: number,
   missed: number,
-  cancelled: number,
-  countCancelledCourses: "NONE" | "ATTENDED" | "MISSED" | undefined,
   attendanceAsPercentage: boolean | undefined
 ) {
-  let percentage =
-    ((attended + (countCancelledCourses === "ATTENDED" ? cancelled : 0)) /
-      (missed +
-        attended +
-        (countCancelledCourses !== "NONE" ? cancelled : 0))) *
-    100;
+  let percentage = (attended / (missed + attended)) * 100;
 
   if (isNaN(percentage)) {
     percentage = 100;
@@ -19,9 +12,7 @@ export function calculatePercentage(
   const attendance =
     attendanceAsPercentage === false
       ? {
-          label: `${
-            attended + (countCancelledCourses === "ATTENDED" ? cancelled : 0)
-          } / ${missed + attended + (countCancelledCourses !== "NONE" ? cancelled : 0)}`,
+          label: `${attended} / ${missed + attended}`,
           percentage: Math.round(percentage)
         }
       : {

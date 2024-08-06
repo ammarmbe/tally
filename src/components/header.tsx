@@ -10,6 +10,7 @@ import { LogOut, Settings } from "lucide-react";
 import { signOut } from "next-auth/react";
 import dayjs from "dayjs";
 import Sidebar from "./sidebar";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 const links = [
   {
@@ -76,26 +77,30 @@ export default function Header() {
               }
               className="overflow-hidden"
             >
-              <Link
-                href="/settings"
-                className={buttonStyles({
-                  size: "sm",
-                  variant: "tertiary",
-                  dropdown: true
-                })}
-              >
-                <Settings size={16} /> Settings
-              </Link>
-              <button
-                className={buttonStyles({
-                  size: "sm",
-                  variant: "tertiary",
-                  dropdown: true
-                })}
-                onClick={() => signOut()}
-              >
-                <LogOut size={16} /> Sign out
-              </button>
+              <DropdownMenu.Item asChild>
+                <Link
+                  href="/settings"
+                  className={buttonStyles({
+                    size: "sm",
+                    variant: "tertiary",
+                    dropdown: true
+                  })}
+                >
+                  <Settings size={16} /> Settings
+                </Link>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item asChild>
+                <button
+                  className={buttonStyles({
+                    size: "sm",
+                    variant: "tertiary",
+                    dropdown: true
+                  })}
+                  onClick={() => signOut()}
+                >
+                  <LogOut size={16} /> Sign out
+                </button>
+              </DropdownMenu.Item>
             </Dropdown>
           </>
         ) : null}

@@ -76,21 +76,15 @@ export default function Page() {
         }
         onRangeChange={handleRangeChange}
         eventPropGetter={(event) => {
-          if (event.status === "ATTENDED") {
+          if (event.attended === true) {
             return {
               className: "bg-brand-solid"
             };
           }
 
-          if (event.status === "MISSED") {
+          if (event.attended === false) {
             return {
               className: "bg-error-solid"
-            };
-          }
-
-          if (event.status === "CANCELLED") {
-            return {
-              className: "bg-secondary-solid"
             };
           }
 

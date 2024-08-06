@@ -113,18 +113,16 @@ export default function Course({ course }: { course: TCourse }) {
           </div>
         </div>
         <div className="my-5 border-t" />
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col items-center gap-2 self-center">
             <p className="text-secondary text-text-sm">Attended</p>
-            <p className="text-text-lg font-semibold">{course.attended}</p>
+            <p className="text-text-lg font-semibold">
+              {course.total_attended}
+            </p>
           </div>
           <div className="flex flex-col items-center gap-2 self-center">
             <p className="text-secondary text-text-sm">Missed</p>
-            <p className="text-text-lg font-semibold">{course.missed}</p>
-          </div>
-          <div className="flex flex-col items-center gap-2 self-center">
-            <p className="text-secondary text-text-sm">Cancelled</p>
-            <p className="text-text-lg font-semibold">{course.cancelled}</p>
+            <p className="text-text-lg font-semibold">{course.total_missed}</p>
           </div>
         </div>
         <div className="my-5 border-t" />

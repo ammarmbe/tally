@@ -101,7 +101,7 @@ export default function EditCourse({
   }>({
     defaultValues: {
       name: course.name,
-      abbreviation: course.abbreviation,
+      abbreviation: course.abbreviation || undefined,
       0: course.courseTimes.some((time) => time.dayOfWeek === 0),
       1: course.courseTimes.some((time) => time.dayOfWeek === 1),
       2: course.courseTimes.some((time) => time.dayOfWeek === 2),

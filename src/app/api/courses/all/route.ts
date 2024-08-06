@@ -31,9 +31,9 @@ export async function GET() {
   });
 
   const attendances = await prisma.courseAttendance.groupBy({
-    by: ["courseId", "status"],
+    by: ["courseId", "attended"],
     _count: {
-      status: true
+      attended: true
     },
     where: {
       courseId: {
@@ -45,33 +45,27 @@ export async function GET() {
   return new Response(
     JSON.stringify(
       courses.map((course) => {
-        const attended =
+        const total_attended =
           attendances.find(
-            (a) => a.status === "ATTENDED" && a.courseId === course.id
-          )?._count.status || 0;
-        const missed =
+            (a) => a.attended === true && a.courseId === course.id
+          )?._count.attended || 0;
+
+        const total_missed =
           attendances.find(
-            (a) => a.status === "MISSED" && a.courseId === course.id
-          )?._count.status || 0;
-        const cancelled =
-          attendances.find(
-            (a) => a.status === "CANCELLED" && a.courseId === course.id
-          )?._count.status || 0;
+            (a) => a.attended === false && a.courseId === course.id
+          )?._count.attended || 0;
 
         const attendance = calculatePercentage(
-          attended,
-          missed,
-          cancelled,
-          session.user?.countCancelledCourses,
+          total_attended,
+          total_missed,
           session.user?.attendanceAsPercentage
         );
 
         return {
           ...course,
           attendance,
-          attended,
-          missed,
-          cancelled
+          total_attended,
+          total_missed
         };
       })
     )

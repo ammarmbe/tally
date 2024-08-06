@@ -90,7 +90,7 @@ export function calculateNextClass(
   ].join(" ");
 }
 
-type CourseTime = {
+type TCourseTime = {
   id: string;
   dayOfWeek: number;
   startTime: string | null;
@@ -98,7 +98,7 @@ type CourseTime = {
   room: string | null;
 };
 
-export const groupCourseTimes = (courseTimes: CourseTime[]) => {
+export const groupCourseTimes = (courseTimes: TCourseTime[]) => {
   return Object.values(
     courseTimes.reduce(
       (acc, courseTime) => {
@@ -109,7 +109,7 @@ export const groupCourseTimes = (courseTimes: CourseTime[]) => {
         acc[key].days.push(courseTime.dayOfWeek);
         return acc;
       },
-      {} as Record<string, CourseTime & { days: number[] }>
+      {} as Record<string, TCourseTime & { days: number[] }>
     )
   );
 };

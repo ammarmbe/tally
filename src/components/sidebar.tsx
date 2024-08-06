@@ -32,6 +32,7 @@ export default function Sidebar({
             },
             "sm:hidden"
           )}
+          name="Open sidebar"
         >
           <Menu size={20} />
         </button>

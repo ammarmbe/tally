@@ -65,7 +65,7 @@ export async function GET(req: Request) {
     },
     select: {
       id: true,
-      status: true,
+      attended: true,
       date: true,
       startTime: true,
       endTime: true,
@@ -92,7 +92,7 @@ export async function GET(req: Request) {
         courseId: courseTime.course.id,
         title: courseTime.course.abbreviation || courseTime.course.name,
         room: courseTime.room,
-        status: undefined,
+        attended: undefined,
         date: dayjs(date).toDate(),
         start: dayjs(
           dayjs(date).format("YYYY-MM-DD ") + courseTime.startTime
@@ -107,7 +107,7 @@ export async function GET(req: Request) {
   const mappedAttendances = attendances.map((attendance) => ({
     id: attendance.id,
     courseId: attendance.course.id,
-    status: attendance.status,
+    attended: attendance.attended,
     title: attendance.course.abbreviation || attendance.course.name,
     room: attendance.room,
     date: dayjs(attendance.date).toDate(),

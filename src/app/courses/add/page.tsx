@@ -58,7 +58,7 @@ export default function Page() {
         data
       )
         .filter((key) => data[key as keyof typeof data])
-        .filter((key) => key !== "name")
+        .filter((key) => key !== "name" && key !== "abbreviation")
         .map((key) => `days=${key}`)
         .join("&")}`
     );
