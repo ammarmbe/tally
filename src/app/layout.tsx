@@ -4,6 +4,7 @@ import "./globals.css";
 import ReactQueryProvider from "@/components/react-query-provider";
 import Header from "@/components/header";
 import { Toaster } from "@/components/toast/toaster";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   subsets: ["latin"]
@@ -33,6 +34,7 @@ export default function RootLayout({
           className={`${inter.className} bg-primary text-primary flex min-h-dvh flex-col`}
         >
           <Toaster />
+          <Analytics />
           <Header />
           {children}
         </body>
