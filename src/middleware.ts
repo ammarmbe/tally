@@ -1,5 +1,8 @@
-import auth from "@/utils/auth.config";
+import authConfig from "@/utils/auth.config";
+import NextAuth from "next-auth";
 import { NextResponse } from "next/server";
+
+const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
   if (req.nextUrl.pathname === "/home" || req.nextUrl.pathname === "/privacy") {
