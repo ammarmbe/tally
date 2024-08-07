@@ -30,7 +30,7 @@ export default function Page({ params }: { params: { date: string } }) {
   if (data && !data.length) {
     return (
       <div className="flex flex-grow flex-col items-center justify-center gap-2">
-        <h2 className="text-text-md font-semibold md:text-text-lg">
+        <h2 className="text-text-lg font-semibold">
           {dayjs().isSame(dayjs(params.date), "day")
             ? "No courses for today! 🎉"
             : "No courses for this day."}

@@ -39,11 +39,11 @@ export default function Header() {
     return;
 
   return (
-    <header className="flex h-[4.375rem] w-full flex-none items-center justify-center border-b sm:h-20">
-      <div className="flex max-w-7xl flex-grow items-center justify-between p-4 py-4 sm:px-8">
+    <header className="flex h-[4.375rem] w-full flex-none items-center justify-center sm:h-20">
+      <div className="flex max-w-7xl flex-grow items-center justify-between px-4 sm:px-8 sm:py-4">
         <div className="flex items-center gap-6">
           <Link href="/">
-            <Image src="/logo.svg" alt="Tally logo" height={32} width={23} />
+            <Image src="/logo.svg" alt="Tally logo" height={27} width={19} />
           </Link>
           <nav className="hidden items-center gap-1 sm:flex">
             {links.map(({ href, text }) => (

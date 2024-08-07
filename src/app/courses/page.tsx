@@ -30,9 +30,7 @@ export default function Page() {
           My Courses
         </h1>
         <div className="flex flex-grow flex-col items-center justify-center gap-2">
-          <h2 className="text-text-md font-semibold md:text-text-lg">
-            No courses found.
-          </h2>
+          <h2 className="text-text-lg font-semibold">No courses found.</h2>
           <p className="text-secondary text-text-md">
             You have not added any courses yet.
           </p>
