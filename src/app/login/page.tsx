@@ -23,9 +23,7 @@ export default async function Page() {
         }}
         className="flex flex-grow flex-col items-center justify-center gap-2"
       >
-        <h2 className="text-text-md font-semibold md:text-text-lg">
-          Please sign in.
-        </h2>
+        <h2 className="text-text-lg font-semibold">Please sign in.</h2>
         <p className="text-secondary text-text-md">
           You need to sign in to use Tally.
         </p>
