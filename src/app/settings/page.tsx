@@ -1,6 +1,12 @@
+import { auth } from "@/utils/auth";
 import { inputStyles, labelStyles } from "@/utils/styles/input";
+import { redirect } from "next/navigation";
 
 export default async function Page() {
+  const session = await auth();
+
+  if (!session?.user) return redirect("/login");
+
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col">
       <h1 className="p-4 pb-0 text-display-xs font-semibold sm:p-8 sm:pb-0 md:text-display-sm">

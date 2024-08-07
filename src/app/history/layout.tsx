@@ -3,8 +3,14 @@ import { queryClient } from "@/utils/query-client";
 import type { ReactNode } from "react";
 import { TCourseHistory } from "@/utils/types";
 import dayjs from "dayjs";
+import { redirect } from "next/navigation";
+import { auth } from "@/utils/auth";
 
 export default async function Layout({ children }: { children: ReactNode }) {
+  const session = await auth();
+
+  if (!session?.user) return redirect("/login");
+
   await queryClient.prefetchQuery({
     queryKey: queryKeys.courses.history(
       dayjs().startOf("month").startOf("week").toDate(),

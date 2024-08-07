@@ -2,8 +2,14 @@ import queryKeys from "@/utils/query-keys";
 import { TCourse } from "@/utils/types";
 import { queryClient } from "@/utils/query-client";
 import type { ReactNode } from "react";
+import { redirect } from "next/navigation";
+import { auth } from "@/utils/auth";
 
 export default async function Layout({ children }: { children: ReactNode }) {
+  const session = await auth();
+
+  if (!session?.user) return redirect("/login");
+
   await queryClient.prefetchQuery({
     queryKey: queryKeys.courses.all(),
     queryFn: async () => {

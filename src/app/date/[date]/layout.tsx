@@ -3,6 +3,8 @@ import { TCourseTime } from "@/utils/types";
 import { queryClient } from "@/utils/query-client";
 import type { ReactNode } from "react";
 import dayjs from "dayjs";
+import { auth } from "@/utils/auth";
+import { redirect } from "next/navigation";
 
 export default async function Layout({
   children,
@@ -11,6 +13,10 @@ export default async function Layout({
   children: ReactNode;
   params: { date: string };
 }) {
+  const session = await auth();
+
+  if (!session?.user) return redirect("/login");
+
   await queryClient.prefetchQuery({
     queryKey: queryKeys.courses.date(params.date),
     queryFn: async () => {
