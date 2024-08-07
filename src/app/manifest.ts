@@ -4,9 +4,10 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Tally",
     short_name: "Tally",
+    description:
+      "Tally is a simple attendance tracker that helps you keep track of attendance for your courses and classes.",
+    categories: ["productivity"],
     display: "standalone",
-    theme_color: "#000000",
-    background_color: "#000000",
     orientation: "portrait",
     scope: "/",
     start_url: "/",
@@ -51,6 +52,18 @@ export default function manifest(): MetadataRoute.Manifest {
         sizes: "512x512",
         type: "image/png",
         purpose: "maskable"
+      },
+      {
+        src: "images/icon-512x512-monochrome.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "monochrome"
+      },
+      {
+        src: "images/badge.png",
+        sizes: "92x92",
+        type: "image/png",
+        purpose: "badge"
       }
     ]
   };
