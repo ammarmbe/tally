@@ -18,7 +18,7 @@ export default function Drawer({
     <DrawerPrimitive.Root direction="right" shouldScaleBackground>
       <DrawerPrimitive.Trigger asChild>{trigger}</DrawerPrimitive.Trigger>
       <DrawerPrimitive.Portal>
-        <DrawerPrimitive.Overlay className="absolute inset-0 z-10 bg-black/30 backdrop-blur-sm" />
+        <DrawerPrimitive.Overlay className="absolute inset-0 z-[50] bg-black/30 backdrop-blur-sm" />
         {close ? (
           <DrawerPrimitive.Close
             className={buttonStyles(
@@ -27,13 +27,13 @@ export default function Drawer({
                 variant: "tertiary",
                 symmetrical: true
               },
-              "absolute left-4 top-4 z-20 w-fit bg-transparent transition-all data-[state=open]:animate-in data-[state=closed]:animate-out"
+              "absolute left-4 top-4 z-[60] w-fit bg-transparent transition-all data-[state=open]:animate-in data-[state=closed]:animate-out"
             )}
           >
             <X size={16} />
           </DrawerPrimitive.Close>
         ) : null}
-        <DrawerPrimitive.Content className="bg-primary fixed right-0 top-0 z-30 flex h-dvh w-[80dvw] flex-col border-l">
+        <DrawerPrimitive.Content className="bg-primary fixed right-0 top-0 z-[70] flex h-dvh w-[80dvw] flex-col border-l">
           {children}
         </DrawerPrimitive.Content>
         <DrawerPrimitive.Overlay />
