@@ -18,7 +18,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
     ),
     queryFn: async () => {
       const res = await fetch(
-        `/api/courses/history?start=${dayjs().startOf("month").startOf("week").toDate()}&end=${dayjs().endOf("month").endOf("week").toDate()}`
+        `/api/courses/history?start=${dayjs().startOf("month").startOf("week").toDate().toDateString()}&end=${dayjs().endOf("month").endOf("week").toDate().toDateString()}`
       );
 
       if (!res.ok) {

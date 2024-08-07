@@ -29,7 +29,7 @@ export default function Page() {
     ),
     queryFn: async () => {
       const res = await fetch(
-        `/api/courses/history?start=${range?.start}&end=${range?.end}`
+        `/api/courses/history?start=${range?.start.toDateString()}&end=${range?.end.toDateString()}`
       );
 
       if (!res.ok) {
