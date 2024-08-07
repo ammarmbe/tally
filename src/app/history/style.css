@@ -685,7 +685,7 @@ button.rbc-input::-moz-focus-inner {
 }
 
 .rbc-toolbar {
-  @apply gap-y-5;
+  @apply gap-y-3;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
