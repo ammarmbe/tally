@@ -89,7 +89,7 @@ export default function Page() {
           }
 
           return {
-            className: "bg-quaternary"
+            className: "bg-quaternary text-black"
           };
         }}
         onSelectSlot={(slotInfo) => {

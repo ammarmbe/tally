@@ -66,7 +66,7 @@ export default function Course({ course }: { course: TCourse }) {
           </div>
           <div className="flex items-center gap-3 self-start">
             <div
-              className={`text-primary flex size-10 flex-none items-center justify-center self-start rounded-full text-text-sm font-bold leading-none tracking-wider ${course.attendance.percentage >= 80 ? "bg-brand-solid" : course.attendance.percentage >= 60 ? "bg-warning-solid" : "bg-error-solid"}`}
+              className={`flex size-10 flex-none items-center justify-center self-start rounded-full text-text-sm font-bold leading-none tracking-wider text-white ${course.attendance.percentage >= 80 ? "bg-brand-solid" : course.attendance.percentage >= 60 ? "bg-warning-solid" : "bg-error-solid"}`}
             >
               {course.attendance.label}
             </div>

@@ -50,9 +50,11 @@ export default function Header() {
                 key={href}
                 href={href}
                 className={`rounded-sm px-3 py-2 text-text-sm font-medium transition-all ${
-                  pathname === href
-                    ? "text-primary bg-secondary"
-                    : "hover:text-primary hover bg-primary active text-secondary active:shadow-focus-ring"
+                  href === "/"
+                    ? pathname === "/date/today"
+                    : pathname === href
+                      ? "text-primary bg-secondary"
+                      : "hover:text-primary hover bg-primary active text-secondary active:shadow-focus-ring"
                 }`}
               >
                 {text}
