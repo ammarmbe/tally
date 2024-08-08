@@ -78,18 +78,18 @@ export default function Page() {
         eventPropGetter={(event) => {
           if (event.attended === true) {
             return {
-              className: "bg-brand-solid !text-white"
+              className: "bg-brand-solid !text-white dark:!text-black"
             };
           }
 
           if (event.attended === false) {
             return {
-              className: "bg-error-solid !text-white"
+              className: "bg-error-solid !text-white dark:!text-black"
             };
           }
 
           return {
-            className: "bg-quaternary !text-black"
+            className: "bg-quaternary !text-black dark:!text-white"
           };
         }}
         onSelectSlot={(slotInfo) => {
