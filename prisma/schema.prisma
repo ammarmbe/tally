@@ -17,13 +17,13 @@ model User {
   attendanceAsPercentage    Boolean   @default(true)
   upcomingClassNotification Int       @default(0) // 0, 15, 30, 45, 60, 120
   lowAttendanceNotification Int       @default(0) // 0, 50, 55, 60, 65, 70, 75, 80
+  notificationEndpoint      String?
   accounts                  Account[]
   sessions                  Session[]
 
-  createdAt                 DateTime                   @default(now())
-  updatedAt                 DateTime                   @updatedAt
-  notificationSubscriptions NotificationSubscription[]
-  courses                   Course[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  courses   Course[]
 }
 
 model Account {
@@ -65,16 +65,6 @@ model VerificationToken {
   @@id([identifier, token])
 }
 
-model NotificationSubscription {
-  id        String   @id
-  userId    String
-  endpoint  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
-}
-
 model Course {
   id           String    @id
   name         String
@@ -90,14 +80,16 @@ model Course {
 }
 
 model CourseTime {
-  id        String   @id
-  courseId  String
-  dayOfWeek Int
-  startTime String?
-  endTime   String?
-  room      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String    @id
+  courseId     String
+  dayOfWeek    Int
+  startTime    String?
+  endTime      String?
+  room         String?
+  timezone     String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  lastNotified DateTime?
 
   course Course @relation(references: [id], fields: [courseId], onDelete: Cascade)
 }

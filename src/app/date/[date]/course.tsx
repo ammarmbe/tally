@@ -33,7 +33,7 @@ export default function Course({
       });
 
       if (!res.ok) {
-        throw new Error("An error occurred while updating the attendance.");
+        throw new Error();
       }
     },
     onMutate: async (attended) => {

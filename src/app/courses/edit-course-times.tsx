@@ -83,7 +83,7 @@ export default function EditCourseTimes({
       });
 
       if (!res.ok) {
-        throw new Error("An error occurred while updating the course.");
+        throw new Error();
       }
 
       return data;

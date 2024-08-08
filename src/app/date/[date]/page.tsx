@@ -24,7 +24,7 @@ export default function Page({ params }: { params: { date: string } }) {
       );
 
       if (!res.ok) {
-        throw new Error("An error occurred while fetching the data.");
+        throw new Error();
       }
 
       return res.json() as Promise<TCourseTime[]>;

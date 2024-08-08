@@ -9,7 +9,8 @@ const queryKeys = {
       startDate,
       endDate
     ]
-  }
+  },
+  notifications: () => ["notifications"]
 };
 
 export default queryKeys;

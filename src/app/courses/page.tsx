@@ -16,7 +16,7 @@ export default function Page() {
       const res = await fetch("/api/courses/all");
 
       if (!res.ok) {
-        throw new Error("An error occurred while fetching the data.");
+        throw new Error();
       }
 
       return res.json() as Promise<TCourse[]>;

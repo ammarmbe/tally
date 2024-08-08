@@ -5,11 +5,15 @@ import { days } from "@/utils/client";
 import buttonStyles from "@/utils/styles/button";
 import { errorStyles, inputStyles, labelStyles } from "@/utils/styles/input";
 import { useMutation } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { ArrowLeft, Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(timezone);
 
 type DaySchedule = {
   startTime: string;
@@ -50,11 +54,14 @@ export default function Page() {
     mutationFn: async (data: CourseData) => {
       const res = await fetch(`/api/courses`, {
         method: "POST",
-        body: JSON.stringify(data)
+        body: JSON.stringify({
+          ...data,
+          timezone: dayjs.tz.guess()
+        })
       });
 
       if (!res.ok) {
-        throw new Error("An error occurred while adding the courses.");
+        throw new Error();
       }
     },
     onSuccess: async () => {

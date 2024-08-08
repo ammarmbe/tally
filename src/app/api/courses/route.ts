@@ -11,6 +11,7 @@ const schema = v.object({
   id: v.nullish(v.string()),
   name: v.pipe(v.string(), v.minLength(1), v.maxLength(64)),
   abbreviation: v.nullish(v.pipe(v.string(), v.maxLength(12))),
+  timezone: v.nullish(v.string()),
   "0": v.nullish(
     v.object({
       startTime: v.nullish(v.string()),
@@ -103,7 +104,7 @@ export async function POST(req: Request): Promise<Response> {
         userId: session.user.id,
         courseTimes: {
           createMany: {
-            data: courseTimesData
+            data: { ...courseTimesData, timezone: parsedData.timezone }
           }
         }
       }

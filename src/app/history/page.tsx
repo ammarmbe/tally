@@ -33,7 +33,7 @@ export default function Page() {
       );
 
       if (!res.ok) {
-        throw new Error("An error occurred while fetching the data.");
+        throw new Error();
       }
 
       const data = (await res.json()) as TCourseHistory[];

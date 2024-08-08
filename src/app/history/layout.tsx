@@ -22,7 +22,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
       );
 
       if (!res.ok) {
-        throw new Error("An error occurred while fetching the data.");
+        throw new Error();
       }
 
       const data = (await res.json()) as TCourseHistory[];

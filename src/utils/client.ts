@@ -113,3 +113,33 @@ export const groupCourseTimes = (courseTimes: TCourseTime[]) => {
     )
   );
 };
+
+export const subscribe = async (
+  userid: string | null | undefined
+): Promise<PushSubscription | null> => {
+  if (!userid) return null;
+
+  // check if a service worker is already registered
+  let swRegistration = await navigator.serviceWorker.getRegistration();
+
+  if (!swRegistration) {
+    swRegistration = await registerServiceWorker();
+  }
+
+  await window?.Notification.requestPermission();
+
+  try {
+    const options = {
+      applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+      userVisibleOnly: true
+    };
+
+    return await swRegistration.pushManager.subscribe(options);
+  } catch (err) {}
+
+  return null;
+};
+
+export const registerServiceWorker = async () => {
+  return navigator.serviceWorker.register("/service.js");
+};
