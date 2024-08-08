@@ -372,7 +372,7 @@ button.rbc-input::-moz-focus-inner {
 }
 
 .rbc-now > .rbc-button-link {
-  @apply bg-brand-solid font-semibold;
+  @apply bg-brand-solid font-semibold text-white;
 }
 
 .rbc-row-segment:has(.rbc-event) {
@@ -681,7 +681,6 @@ button.rbc-input::-moz-focus-inner {
   right: 0;
   height: 1px;
   background-color: hsla(var(--brand-500));
-  color: white;
   pointer-events: none;
 }
 
