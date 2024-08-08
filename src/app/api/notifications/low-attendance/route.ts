@@ -48,9 +48,12 @@ export async function GET() {
       JOIN "Course" courses ON courses."userId" = users.id
       JOIN "CourseTime" courseTimes ON courseTimes."courseId" = courses.id
     WHERE users."lowAttendanceNotification" != 0
-      AND (((SELECT COUNT(*) FROM "CourseAttendance" WHERE "courseId" = courses.id AND attended = true)::FLOAT /
-            (SELECT COUNT(*) + 1 FROM "CourseAttendance" WHERE "courseId" = courses.id)::FLOAT) * 100) <=
-          users."lowAttendanceNotification"
+      AND (((((SELECT COUNT(*) FROM "CourseAttendance" WHERE "courseId" = courses.id AND attended = true)::FLOAT /
+              (SELECT COUNT(*) + 1 FROM "CourseAttendance" WHERE "courseId" = courses.id)::FLOAT) * 100) <=
+            users."lowAttendanceNotification") AND
+          ((((SELECT COUNT(*) FROM "CourseAttendance" WHERE "courseId" = courses.id AND attended = true)::FLOAT /
+              (SELECT COUNT(*) FROM "CourseAttendance" WHERE "courseId" = courses.id)::FLOAT) * 100) >
+            users."lowAttendanceNotification"))
       AND EXTRACT(DOW FROM CURRENT_DATE AT TIME ZONE courseTimes.timezone) = courseTimes."dayOfWeek"
     `) as {
     notificationEndpoint: string;
