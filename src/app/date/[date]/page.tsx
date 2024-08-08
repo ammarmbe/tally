@@ -15,9 +15,13 @@ export default function Page({ params }: { params: { date: string } }) {
   const user = useUser();
 
   const { data, isLoading } = useQuery({
-    queryKey: queryKeys.courses.date(params.date),
+    queryKey: queryKeys.courses.date(
+      params.date === "today" ? dayjs().format("YYYY-MM-DD") : params.date
+    ),
     queryFn: async () => {
-      const res = await fetch(`/api/courses/date/${params.date}`);
+      const res = await fetch(
+        `/api/courses/date/${params.date === "today" ? dayjs().format("YYYY-MM-DD") : params.date}`
+      );
 
       if (!res.ok) {
         throw new Error("An error occurred while fetching the data.");
@@ -31,12 +35,12 @@ export default function Page({ params }: { params: { date: string } }) {
     return (
       <div className="flex flex-grow flex-col items-center justify-center gap-2">
         <h2 className="text-text-lg font-semibold">
-          {dayjs().isSame(dayjs(params.date), "day")
+          {params.date === "today"
             ? "No courses for today! 🎉"
             : "No courses for this day."}
         </h2>
         <p className="text-secondary text-text-md">
-          {dayjs().isSame(dayjs(params.date), "day")
+          {params.date === "today"
             ? `Enjoy your day off${user?.name ? `, ${user.name.split(" ")[0]}` : ""}.`
             : `You ${dayjs().isBefore(dayjs(params.date), "day") ? "had" : "have"} no courses on this day.`}
         </p>
@@ -71,7 +75,9 @@ export default function Page({ params }: { params: { date: string } }) {
         <Course
           key={course.id}
           course={course}
-          date={params.date}
+          date={
+            params.date === "today" ? dayjs().format("YYYY-MM-DD") : params.date
+          }
           user={user}
         />
       ))}

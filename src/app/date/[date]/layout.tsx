@@ -18,9 +18,13 @@ export default async function Layout({
   if (!session?.user) return redirect("/login");
 
   await queryClient.prefetchQuery({
-    queryKey: queryKeys.courses.date(params.date),
+    queryKey: queryKeys.courses.date(
+      params.date === "today" ? dayjs().format("YYYY-MM-DD") : params.date
+    ),
     queryFn: async () => {
-      const res = await fetch(`/api/courses/date/${params.date}`);
+      const res = await fetch(
+        `/api/courses/date/${params.date === "today" ? dayjs().format("YYYY-MM-DD") : params.date}`
+      );
 
       if (!res.ok) {
         throw new Error("An error occurred while fetching the data.");
@@ -33,7 +37,9 @@ export default async function Layout({
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col">
       <h1 className="p-4 pb-0 text-display-xs font-semibold sm:p-8 sm:pb-0 md:text-display-sm">
-        {dayjs(params.date).format("dddd, MMMM D, YYYY")}
+        {dayjs(params.date === "today" ? undefined : params.date).format(
+          "dddd, MMMM D, YYYY"
+        )}
       </h1>
       {children}
     </main>

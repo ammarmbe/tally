@@ -7,15 +7,11 @@ import { Clock, MapPin } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import isBetween from "dayjs/plugin/isBetween";
 import relativeTime from "dayjs/plugin/relativeTime";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 import { User } from "next-auth";
 import { calculatePercentage } from "@/utils/shared";
 
 dayjs.extend(isBetween);
 dayjs.extend(relativeTime);
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 export default function Course({
   course,

@@ -4,8 +4,6 @@ import { Clock, MapPin, Pencil } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import isBetween from "dayjs/plugin/isBetween";
 import relativeTime from "dayjs/plugin/relativeTime";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 import {
   defaultDate,
   groupCourseTimes,
@@ -18,8 +16,6 @@ import buttonStyles from "@/utils/styles/button";
 
 dayjs.extend(isBetween);
 dayjs.extend(relativeTime);
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 export default function Course({ course }: { course: TCourse }) {
   const [modalOpen, setModalOpen] = useState(false);

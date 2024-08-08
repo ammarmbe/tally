@@ -8,13 +8,12 @@ import Dropdown from "./dropdown";
 import buttonStyles from "@/utils/styles/button";
 import { LogOut, Settings } from "lucide-react";
 import { signOut } from "next-auth/react";
-import dayjs from "dayjs";
 import Sidebar from "./sidebar";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 const links = [
   {
-    href: `/date/${dayjs().format("YYYY-MM-DD")}`,
+    href: "/",
     text: "Home"
   },
   {
