@@ -8,6 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
       "Tally is a simple attendance tracker that helps you keep track of attendance for your courses and classes.",
     categories: ["productivity"],
     display: "standalone",
+    background_color: "#141414",
+    theme_color: "#141414",
     orientation: "portrait",
     scope: "/",
     start_url: "/",
