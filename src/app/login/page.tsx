@@ -1,6 +1,5 @@
 import { auth, signIn } from "@/utils/auth";
 import buttonStyles from "@/utils/styles/button";
-import dayjs from "dayjs";
 import { LogIn } from "lucide-react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
@@ -8,7 +7,7 @@ import { redirect } from "next/navigation";
 export default async function Page() {
   const session = await auth();
 
-  if (session?.user) return redirect(`/date/${dayjs().format("YYYY-MM-DD")}`);
+  if (session?.user) return redirect("/");
 
   return (
     <main className="flex flex-grow flex-col">

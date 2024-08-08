@@ -1,6 +1,10 @@
+"use client";
+
 import dayjs from "dayjs";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
-  return redirect(`/date/${dayjs().format("YYYY-MM-DD")}`);
+  const router = useRouter();
+
+  return router.replace(`/date/${dayjs().format("YYYY-MM-DD")}`);
 }
