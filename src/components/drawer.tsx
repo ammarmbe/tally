@@ -33,7 +33,7 @@ export default function Drawer({
             <X size={16} />
           </DrawerPrimitive.Close>
         ) : null}
-        <DrawerPrimitive.Content className="bg-primary fixed right-0 top-0 z-[70] flex h-dvh w-[80dvw] flex-col border-l">
+        <DrawerPrimitive.Content className="bg-primary fixed right-0 top-0 z-[70] flex h-dvh w-[80dvw] flex-col border-l py-4">
           {children}
         </DrawerPrimitive.Content>
         <DrawerPrimitive.Overlay />
