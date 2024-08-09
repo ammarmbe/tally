@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/notifications/class-upcoming",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/notifications/low-attendance",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}
