@@ -26,7 +26,10 @@ export default function LowAttendance({ user }: { user: User }) {
 
       const res = await fetch("/api/notifications/low-attendance", {
         method: "POST",
-        body: JSON.stringify({ percentage, subscription })
+        body: JSON.stringify({
+          percentage,
+          subscription: subscription?.endpoint
+        })
       });
 
       if (!res.ok) {
