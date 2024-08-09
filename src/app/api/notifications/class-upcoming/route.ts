@@ -36,7 +36,13 @@ export async function POST(req: Request) {
   return new Response("OK");
 }
 
-export async function GET() {
+export async function GET(req: Request) {
+  if (
+    req.headers.get("Authorization") !== `Bearer ${process.env.CRON_SECRET}`
+  ) {
+    return new Response(null, { status: 401 });
+  }
+
   const data = (await prisma.$queryRaw`
     SELECT
       courseTimes.id,
