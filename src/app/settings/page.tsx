@@ -1,7 +1,7 @@
 import { auth } from "@/utils/auth";
 import { redirect } from "next/navigation";
-import ClassUpcoming from "./class-upcoming";
 import LowAttendance from "./low-attendance";
+import ClassUpcoming from "./class-upcoming";
 
 export default async function Page() {
   const session = await auth();
