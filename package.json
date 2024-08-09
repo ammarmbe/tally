@@ -1,6 +1,6 @@
 {
-  "name": "tally-2.0",
-  "version": "0.1.0",
+  "name": "tally",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -47,14 +47,10 @@
     "valibot": "^0.37.0",
     "vaul": "^0.9.1",
     "web-push": "^3.6.7",
-    "ws": "^8.18.0"
-  },
-  "devDependencies": {
     "@types/node": "^20.14.14",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/web-push": "^3.6.3",
-    "@types/ws": "^8.5.12",
     "eslint": "^8.57.0",
     "eslint-config-next": "15.0.0-rc.0",
     "eslint-config-prettier": "^9.1.0",
@@ -64,6 +60,5 @@
     "prisma": "^5.18.0",
     "tailwindcss": "^3.4.8",
     "typescript": "^5.5.4"
-  },
-  "packageManager": "pnpm@9.7.0+sha512.dc09430156b427f5ecfc79888899e1c39d2d690f004be70e05230b72cb173d96839587545d09429b55ac3c429c801b4dc3c0e002f653830a420fa2dd4e3cf9cf"
+  }
 }
