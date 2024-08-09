@@ -2,21 +2,16 @@ import buttonStyles from "@/utils/styles/button";
 import { days } from "@/utils/client";
 import { labelStyles, inputStyles, errorStyles } from "@/utils/styles/input";
 import { TCourse } from "@/utils/types";
-import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
-import { useForm, SubmitHandler, useWatch } from "react-hook-form";
+import { Dispatch, Fragment, SetStateAction } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import queryKeys from "@/utils/query-keys";
-import { useToast } from "@/components/toast/use-toast";
 import { DialogClose } from "@radix-ui/react-dialog";
 
 export default function EditCourse({
   course,
-  setModalOpen,
   setNewData
 }: {
   course: TCourse;
-  setModalOpen: Dispatch<SetStateAction<boolean>>;
   setNewData: Dispatch<
     SetStateAction<{
       name: string;
@@ -31,61 +26,9 @@ export default function EditCourse({
     } | null>
   >;
 }) {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-
-  const [daysUpdated, setDaysUpdated] = useState(false);
-
-  const updateMutation = useMutation({
-    mutationFn: async (data: { name: string; abbreviation: string }) => {
-      const res = await fetch("/api/courses/", {
-        method: "PATCH",
-        body: JSON.stringify({ ...data, id: course.id })
-      });
-
-      if (!res.ok) {
-        throw new Error();
-      }
-
-      return data;
-    },
-    onSuccess: async (data) => {
-      queryClient.setQueryData(
-        queryKeys.courses.all(),
-        (old: TCourse[] | undefined) =>
-          old?.map((c) => {
-            if (c.id === course.id) {
-              return { ...c, ...data };
-            }
-            return c;
-          })
-      );
-
-      toast({
-        type: "foreground",
-        title: "Course updated",
-        description: `${data.name} has been updated successfully.`
-      });
-
-      setModalOpen(false);
-    },
-    onError: () => {
-      toast({
-        type: "foreground",
-        title: "An error occurred",
-        description: "An error occurred while updating the course."
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.courses.all()
-      });
-    }
-  });
-
   const {
     register,
     handleSubmit,
-    control,
     watch,
     formState: { errors }
   } = useForm<{
@@ -112,11 +55,6 @@ export default function EditCourse({
     }
   });
 
-  const formDays = useWatch({
-    name: ["0", "1", "2", "3", "4", "5", "6"],
-    control
-  });
-
   const onSubmit: SubmitHandler<{
     name: string;
     abbreviation: string;
@@ -140,56 +78,20 @@ export default function EditCourse({
       }).map((key) => [key, data[key as keyof typeof data]])
     );
 
-    const days = Object.fromEntries(
-      Array.from({ length: 7 }, (_, i) => [
-        i.toString(),
-        course.courseTimes.some((time) => time.dayOfWeek === i)
-      ])
-    );
-
-    if (JSON.stringify(mappedFormDays) !== JSON.stringify(days)) {
-      setNewData({
-        name: data.name,
-        abbreviation: data.abbreviation,
-        ...(mappedFormDays as {
-          0: boolean;
-          1: boolean;
-          2: boolean;
-          3: boolean;
-          4: boolean;
-          5: boolean;
-          6: boolean;
-        })
-      });
-    } else {
-      updateMutation.mutate({
-        name: data.name,
-        abbreviation: data.abbreviation
-      });
-    }
+    setNewData({
+      name: data.name,
+      abbreviation: data.abbreviation,
+      ...(mappedFormDays as {
+        0: boolean;
+        1: boolean;
+        2: boolean;
+        3: boolean;
+        4: boolean;
+        5: boolean;
+        6: boolean;
+      })
+    });
   };
-
-  useEffect(() => {
-    const mappedFormDays = Object.fromEntries(
-      Object.keys(formDays).map((key) => [
-        key,
-        formDays[key as keyof typeof formDays]
-      ])
-    );
-
-    const days = Object.fromEntries(
-      Array.from({ length: 7 }, (_, i) => [
-        i.toString(),
-        course.courseTimes.some((time) => time.dayOfWeek === i)
-      ])
-    );
-
-    if (JSON.stringify(mappedFormDays) !== JSON.stringify(days)) {
-      setDaysUpdated(true);
-    } else {
-      setDaysUpdated(false);
-    }
-  }, [formDays, course.courseTimes]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
@@ -289,9 +191,8 @@ export default function EditCourse({
             size: "md",
             variant: "primary"
           })}
-          disabled={updateMutation.isPending}
         >
-          {daysUpdated ? "Next" : "Save"}
+          Next
         </button>
       </div>
     </form>

@@ -99,11 +99,7 @@ export default function Course({ course }: { course: TCourse }) {
                   newData={newData}
                 />
               ) : (
-                <EditCourse
-                  course={course}
-                  setModalOpen={setModalOpen}
-                  setNewData={setNewData}
-                />
+                <EditCourse course={course} setNewData={setNewData} />
               )}
             </Modal>
           </div>
