@@ -32,13 +32,7 @@ export const sendClassUpcomingNotification = async (course: {
   start: string;
   room: string;
 }) => {
-  if (!course) {
-    console.log("no course passed");
-    return;
-  }
-
-  if (!course.endpoint) {
-    console.log("no endpoint passed");
+  if (!course || !course.endpoint) {
     return;
   }
 
