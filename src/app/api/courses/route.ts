@@ -89,6 +89,7 @@ export async function POST(req: Request): Promise<Response> {
       .map((key) => ({
         id: nanoid(),
         dayOfWeek: Number.parseInt(key),
+        timezone: parsedData.timezone,
         startTime:
           parsedData[key as "0" | "1" | "2" | "3" | "4" | "5" | "6"]?.startTime,
         endTime:
@@ -140,6 +141,7 @@ export async function PATCH(req: Request): Promise<Response> {
       .map((key) => ({
         id: nanoid(),
         dayOfWeek: Number.parseInt(key),
+        timezone: parsedData.timezone,
         startTime:
           parsedData[key as "0" | "1" | "2" | "3" | "4" | "5" | "6"]?.startTime,
         endTime:
