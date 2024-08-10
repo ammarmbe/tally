@@ -78,5 +78,7 @@ export async function GET(req: Request) {
     });
   }
 
-  return new Response(JSON.stringify(data.length));
+  console.log(`Low attendance notifications sent: ${data.length}`);
+
+  return new Response("OK");
 }

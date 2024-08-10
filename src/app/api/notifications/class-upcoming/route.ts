@@ -87,5 +87,7 @@ export async function GET(req: Request) {
     }
   });
 
-  return new Response(JSON.stringify(data.length));
+  console.log(`Upcoming class notifications sent: ${data.length}`);
+
+  return new Response("OK");
 }
