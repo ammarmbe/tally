@@ -27,12 +27,12 @@ export function calculatePercentage(
 }
 
 export const sendClassUpcomingNotification = async (course: {
-  endpoint: string;
+  subscription: string;
   name: string;
   start: string;
   room: string;
 }) => {
-  if (!course || !course.endpoint) {
+  if (!course || !course.subscription) {
     return;
   }
 
@@ -49,11 +49,14 @@ export const sendClassUpcomingNotification = async (course: {
     process.env.VAPID_PRIVATE_KEY as string
   );
 
-  return await webpush.sendNotification(JSON.parse(course.endpoint), payload);
+  return await webpush.sendNotification(
+    JSON.parse(course.subscription),
+    payload
+  );
 };
 
 export const sendLowAttendanceNotification = async (course: {
-  endpoint: string;
+  subscription: string;
   name: string;
   start: string;
   room: string;
@@ -63,7 +66,7 @@ export const sendLowAttendanceNotification = async (course: {
     return;
   }
 
-  if (!course.endpoint) {
+  if (!course.subscription) {
     console.log("no endpoint passed");
     return;
   }
@@ -81,5 +84,8 @@ export const sendLowAttendanceNotification = async (course: {
     process.env.VAPID_PRIVATE_KEY as string
   );
 
-  return await webpush.sendNotification(JSON.parse(course.endpoint), payload);
+  return await webpush.sendNotification(
+    JSON.parse(course.subscription),
+    payload
+  );
 };

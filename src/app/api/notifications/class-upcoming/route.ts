@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     },
     data: {
       upcomingClassNotification: Number.parseInt(duration),
-      notificationEndpoint: subscription
+      notificationSubscription: subscription
     }
   });
 
@@ -46,7 +46,7 @@ export async function GET(req: Request) {
   const data = (await prisma.$queryRaw`
     SELECT
       courseTimes.id,
-      users."notificationEndpoint",
+      users."notificationSubscription",
       courses.name,
       courseTimes."startTime",
       courseTimes.room
@@ -60,7 +60,7 @@ export async function GET(req: Request) {
         BETWEEN (courseTimes."startTime"::time - (users."upcomingClassNotification" * INTERVAL '1 minute'))
         AND (courseTimes."startTime"::time)
     `) as {
-    notificationEndpoint: string;
+    notificationSubscription: string;
     id: string;
     name: string;
     startTime: string;
@@ -69,7 +69,7 @@ export async function GET(req: Request) {
 
   for (const course of data) {
     await sendClassUpcomingNotification({
-      endpoint: course.notificationEndpoint,
+      subscription: course.notificationSubscription,
       name: course.name,
       start: course.startTime,
       room: course.room

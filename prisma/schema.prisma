@@ -17,7 +17,7 @@ model User {
   attendanceAsPercentage    Boolean   @default(true)
   upcomingClassNotification Int       @default(0) // 0, 15, 30, 45, 60, 120
   lowAttendanceNotification Int       @default(0) // 0, 50, 55, 60, 65, 70, 75, 80
-  notificationEndpoint      String?
+  notificationSubscription  String?
   accounts                  Account[]
   sessions                  Session[]
 

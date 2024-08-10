@@ -26,7 +26,7 @@ export default function ClassUpcoming({ user }: { user: User }) {
 
       const res = await fetch("/api/notifications/class-upcoming", {
         method: "POST",
-        body: JSON.stringify({ duration, subscription: subscription?.endpoint })
+        body: JSON.stringify({ duration, subscription })
       });
 
       if (!res.ok) {

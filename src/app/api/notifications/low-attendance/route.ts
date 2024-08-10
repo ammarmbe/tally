@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     },
     data: {
       lowAttendanceNotification: Number.parseInt(percentage),
-      notificationEndpoint: subscription
+      notificationSubscription: subscription
     }
   });
 
@@ -46,7 +46,7 @@ export async function GET(req: Request) {
   const data = (await prisma.$queryRaw`
     SELECT
       courseTimes.id,
-      users."notificationEndpoint",
+      users."notificationSubscription",
       courses.name,
       courseTimes."startTime",
       courseTimes.room
@@ -62,7 +62,7 @@ export async function GET(req: Request) {
             users."lowAttendanceNotification"))
       AND EXTRACT(DOW FROM CURRENT_DATE AT TIME ZONE courseTimes.timezone) = courseTimes."dayOfWeek"
     `) as {
-    notificationEndpoint: string;
+    notificationSubscription: string;
     id: string;
     name: string;
     startTime: string;
@@ -71,7 +71,7 @@ export async function GET(req: Request) {
 
   for (const course of data) {
     await sendLowAttendanceNotification({
-      endpoint: course.notificationEndpoint,
+      subscription: course.notificationSubscription,
       name: course.name,
       start: course.startTime,
       room: course.room
