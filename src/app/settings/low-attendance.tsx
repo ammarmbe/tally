@@ -28,7 +28,7 @@ export default function LowAttendance({ user }: { user: User }) {
         method: "POST",
         body: JSON.stringify({
           percentage,
-          subscription
+          subscription: JSON.stringify(subscription)
         })
       });
 
