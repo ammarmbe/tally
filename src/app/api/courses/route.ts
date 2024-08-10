@@ -141,7 +141,6 @@ export async function PATCH(req: Request): Promise<Response> {
       .map((key) => ({
         id: nanoid(),
         dayOfWeek: Number.parseInt(key),
-        timezone: parsedData.timezone,
         startTime:
           parsedData[key as "0" | "1" | "2" | "3" | "4" | "5" | "6"]?.startTime,
         endTime:
@@ -170,7 +169,8 @@ export async function PATCH(req: Request): Promise<Response> {
       await prisma.courseTime.createMany({
         data: courseTimesData.map((courseTime) => ({
           ...courseTime,
-          courseId: parsedData.id as string
+          courseId: parsedData.id as string,
+          timezone: parsedData.timezone
         }))
       });
     }

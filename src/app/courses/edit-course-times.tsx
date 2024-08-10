@@ -7,6 +7,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import queryKeys from "@/utils/query-keys";
 import { useToast } from "@/components/toast/use-toast";
+import dayjs from "dayjs";
 
 type DaySchedule = {
   startTime: string | undefined;
@@ -79,7 +80,11 @@ export default function EditCourseTimes({
     mutationFn: async (data: CourseData) => {
       const res = await fetch("/api/courses/", {
         method: "PATCH",
-        body: JSON.stringify({ ...data, id: course.id })
+        body: JSON.stringify({
+          ...data,
+          id: course.id,
+          timezone: dayjs.tz.guess()
+        })
       });
 
       if (!res.ok) {
