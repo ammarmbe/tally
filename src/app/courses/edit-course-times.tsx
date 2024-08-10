@@ -8,6 +8,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import queryKeys from "@/utils/query-keys";
 import { useToast } from "@/components/toast/use-toast";
 import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(timezone);
 
 type DaySchedule = {
   startTime: string | undefined;
