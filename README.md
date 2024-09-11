@@ -6,7 +6,7 @@ Tally is an attendance tracker app created using Next.js 15 RC and the new React
 
 ## Features
 
-Users can add their course details (days, start and end times, room name, etc.) to the app, and each day they will find their courses for the day in the dashboard. "Attended", "cancelled", and "missed" are the options to log attendance for each class, and the app automatically calculates attendance percentage based on these entries. Users can also enable class reminder push notifications (PWA) at their desired times.
+Users can add their course details (days, start and end times, room name, etc.) to the app, and each day they will find their courses for the day in the dashboard. The app automatically calculates attendance percentage based on these entries. Users can also enable class reminder push notifications (using PWA) at their desired times.
 
 ## Tech Stack
 
