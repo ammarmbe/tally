@@ -10,7 +10,7 @@ function makeQueryClient() {
 
 let clientQueryClient: QueryClient | undefined = undefined;
 
-export function getQueryClient() {
+function getQueryClient() {
   if (typeof window === "undefined") {
     // Server: always make a new query client
     return makeQueryClient();
@@ -22,7 +22,7 @@ export function getQueryClient() {
   }
 }
 
-export const ClientProviders = ({ children }: { children: ReactNode }) => {
+const ReactQueryProvider = ({ children }: { children: ReactNode }) => {
   const queryClient = getQueryClient();
 
   return (
@@ -31,3 +31,5 @@ export const ClientProviders = ({ children }: { children: ReactNode }) => {
     </QueryClientProvider>
   );
 };
+
+export default ReactQueryProvider;
