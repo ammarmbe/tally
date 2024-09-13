@@ -97,6 +97,8 @@ export async function POST(req: Request): Promise<Response> {
         room: parsedData[key as "0" | "1" | "2" | "3" | "4" | "5" | "6"]?.room
       }));
 
+    console.log(courseTimesData);
+
     await prisma.course.create({
       data: {
         id: nanoid(),
@@ -105,7 +107,7 @@ export async function POST(req: Request): Promise<Response> {
         userId: session.user.id,
         courseTimes: {
           createMany: {
-            data: { ...courseTimesData, timezone: parsedData.timezone }
+            data: courseTimesData
           }
         }
       }
@@ -183,4 +185,29 @@ export async function PATCH(req: Request): Promise<Response> {
 
     throw error;
   }
+}
+
+export async function DELETE(req: Request): Promise<Response> {
+  const { id } = await req.json();
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    return new Response(null, { status: 401 });
+  }
+
+  if (!id) {
+    return new Response(null, { status: 422 });
+  }
+
+  await prisma.course.update({
+    where: {
+      id,
+      userId: session.user.id
+    },
+    data: {
+      deletedAt: new Date()
+    }
+  });
+
+  return new Response("OK");
 }

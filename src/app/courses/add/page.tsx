@@ -1,21 +1,22 @@
 "use client";
 
-import { days } from "@/utils/client";
+import { days as allDays } from "@/utils/client";
 import buttonStyles from "@/utils/styles/button";
 import { errorStyles, inputStyles, labelStyles } from "@/utils/styles/input";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 
 export default function Page() {
   const router = useRouter();
 
+  const [selectedDays, setSelectedDays] = useState<string[]>([]);
+
   const {
     register,
     handleSubmit,
-    watch,
     setError,
     formState: { errors }
   } = useForm<{
@@ -122,13 +123,13 @@ export default function Page() {
         <div className="flex flex-col gap-1.5">
           <p className={labelStyles({ required: true })}>Days</p>
           <div className="flex flex-wrap gap-2">
-            {days.map((day) => (
+            {allDays.map((day) => (
               <Fragment key={day.value}>
                 <label
                   htmlFor={day.value}
                   className={twMerge(
                     "flex h-fit cursor-pointer items-center justify-center gap-2 rounded-md border px-3 py-2 !text-text-sm font-semibold transition-all active:shadow-focus-ring-gray",
-                    watch(day.value)
+                    selectedDays.includes(day.value)
                       ? "border-transparent bg-gray-900 text-gray-100 hover:bg-gray-700 active:bg-gray-900 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300 dark:active:bg-gray-100"
                       : "hover:bg-secondary text-secondary hover:text-primary active:bg-primary bg-primary hover:border-primary"
                   )}
@@ -140,6 +141,13 @@ export default function Page() {
                   id={day.value}
                   hidden
                   {...register(day.value)}
+                  onClick={() => {
+                    setSelectedDays((prev) =>
+                      prev.includes(day.value)
+                        ? prev.filter((d) => d !== day.value)
+                        : [...prev, day.value]
+                    );
+                  }}
                 />
               </Fragment>
             ))}

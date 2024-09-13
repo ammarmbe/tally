@@ -1,6 +1,6 @@
 import { TCourse } from "@/utils/types";
 import dayjs from "dayjs";
-import { Clock, MapPin, Pencil } from "lucide-react";
+import { Clock, Ellipsis, MapPin, Pencil } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import isBetween from "dayjs/plugin/isBetween";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -13,6 +13,8 @@ import EditCourse from "./edit-course";
 import EditCourseTimes from "./edit-course-times";
 import Modal from "@/components/modal";
 import buttonStyles from "@/utils/styles/button";
+import Dropdown from "@/components/dropdown";
+import DeleteCourse from "./delete-course";
 
 dayjs.extend(isBetween);
 dayjs.extend(relativeTime);
@@ -70,9 +72,7 @@ export default function Course({ course }: { course: TCourse }) {
             >
               {course.attendance.label}
             </div>
-            <Modal
-              open={modalOpen}
-              onOpenChange={setModalOpen}
+            <Dropdown
               trigger={
                 <button
                   className={buttonStyles(
@@ -84,24 +84,44 @@ export default function Course({ course }: { course: TCourse }) {
                     "self-start"
                   )}
                 >
-                  <Pencil size={16} />
+                  <Ellipsis size={16} />
                 </button>
               }
-              saveButton={null}
-              cancelButton={null}
-              title="Edit course"
             >
-              {newData ? (
-                <EditCourseTimes
-                  course={course}
-                  setModalOpen={setModalOpen}
-                  setNewData={setNewData}
-                  newData={newData}
-                />
-              ) : (
-                <EditCourse course={course} setNewData={setNewData} />
-              )}
-            </Modal>
+              <Modal
+                open={modalOpen}
+                onOpenChange={setModalOpen}
+                trigger={
+                  <button
+                    className={buttonStyles(
+                      {
+                        size: "sm",
+                        variant: "tertiary",
+                        dropdown: true
+                      },
+                      "justify-start"
+                    )}
+                  >
+                    <Pencil size={16} /> Edit
+                  </button>
+                }
+                saveButton={null}
+                cancelButton={null}
+                title="Edit course"
+              >
+                {newData ? (
+                  <EditCourseTimes
+                    course={course}
+                    setModalOpen={setModalOpen}
+                    setNewData={setNewData}
+                    newData={newData}
+                  />
+                ) : (
+                  <EditCourse course={course} setNewData={setNewData} />
+                )}
+              </Modal>
+              <DeleteCourse course={course} />
+            </Dropdown>
           </div>
         </div>
         <div className="my-5 border-t" />
