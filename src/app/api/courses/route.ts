@@ -97,8 +97,6 @@ export async function POST(req: Request): Promise<Response> {
         room: parsedData[key as "0" | "1" | "2" | "3" | "4" | "5" | "6"]?.room
       }));
 
-    console.log(courseTimesData);
-
     await prisma.course.create({
       data: {
         id: nanoid(),
