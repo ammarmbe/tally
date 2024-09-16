@@ -1,6 +1,6 @@
-import { auth } from "@/utils/auth";
+import {auth} from "@/utils/auth";
 import prisma from "@/utils/db";
-import { sendLowAttendanceNotification } from "@/utils/shared";
+import {sendLowAttendanceNotification} from "@/utils/shared";
 import * as v from "valibot";
 
 const schema = v.object({
@@ -54,6 +54,7 @@ export async function GET(req: Request) {
       JOIN "Course" courses ON courses."userId" = users.id
       JOIN "CourseTime" courseTimes ON courseTimes."courseId" = courses.id
     WHERE users."lowAttendanceNotification" != 0
+      AND (SELECT COUNT(*) FROM "CourseAttendance" WHERE "courseId" = courses.id) > 0
       AND (((((SELECT COUNT(*) FROM "CourseAttendance" WHERE "courseId" = courses.id AND attended = true)::FLOAT /
               (SELECT COUNT(*) + 1 FROM "CourseAttendance" WHERE "courseId" = courses.id)::FLOAT) * 100) <=
             users."lowAttendanceNotification") AND

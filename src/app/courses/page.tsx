@@ -54,9 +54,23 @@ export default function Page() {
   if (isLoading) {
     return (
       <>
-        <h1 className="p-4 pb-0 text-display-xs font-semibold sm:p-8 sm:pb-0 md:text-display-sm">
-          My Courses
-        </h1>
+        <div className="flex flex-wrap items-center justify-between gap-5 p-4 pb-0 sm:p-8 sm:pb-0">
+          <h1 className="text-display-xs font-semibold md:text-display-sm">
+            My Courses
+          </h1>
+          <Link
+            href="/courses/add"
+            className={buttonStyles(
+              {
+                size: "sm",
+                variant: "primary"
+              },
+              "mt-4"
+            )}
+          >
+            <Plus size={16} /> Add course
+          </Link>
+        </div>
         <Loading />
       </>
     );
@@ -64,9 +78,23 @@ export default function Page() {
 
   return (
     <>
-      <h1 className="p-4 pb-0 text-display-xs font-semibold sm:p-8 sm:pb-0 md:text-display-sm">
-        My Courses
-      </h1>
+      <div className="flex flex-wrap items-center justify-between gap-5 p-4 pb-0 sm:p-8 sm:pb-0">
+        <h1 className="text-display-xs font-semibold md:text-display-sm">
+          My Courses
+        </h1>
+        <Link
+          href="/courses/add"
+          className={buttonStyles(
+            {
+              size: "sm",
+              variant: "primary"
+            },
+            "mt-4"
+          )}
+        >
+          <Plus size={16} /> Add course
+        </Link>
+      </div>
       <div
         style={{
           gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))"

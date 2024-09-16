@@ -4,7 +4,7 @@ export default function Loading() {
   return (
     <div
       style={{
-        gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))"
+        gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))"
       }}
       className="grid gap-4 overflow-hidden p-4 sm:p-8"
     >

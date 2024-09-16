@@ -144,10 +144,13 @@ export default function Page() {
                     id={`${day}.startTime`}
                     type="time"
                     {...register(`${day}.startTime`)}
-                    className={inputStyles({
-                      size: "sm",
-                      error: Boolean(errors[day]?.startTime)
-                    })}
+                    className={inputStyles(
+                      {
+                        size: "sm",
+                        error: Boolean(errors[day]?.startTime)
+                      },
+                      "h-[2.75rem]"
+                    )}
                   />
                   {errors[day]?.startTime ? (
                     <p className={errorStyles}>
@@ -163,10 +166,13 @@ export default function Page() {
                     id={`${day}.endTime`}
                     type="time"
                     {...register(`${day}.endTime`)}
-                    className={inputStyles({
-                      size: "sm",
-                      error: Boolean(errors[day]?.endTime)
-                    })}
+                    className={inputStyles(
+                      {
+                        size: "sm",
+                        error: Boolean(errors[day]?.endTime)
+                      },
+                      "h-[2.75rem]"
+                    )}
                   />
                   {errors[day]?.endTime ? (
                     <p className={errorStyles}>{errors[day].endTime.message}</p>
