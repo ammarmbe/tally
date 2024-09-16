@@ -36,12 +36,14 @@ export async function POST(req: Request) {
   return new Response("OK");
 }
 
-export async function GET(req: Request) {
+export async function PATCH(req: Request) {
   if (
     req.headers.get("Authorization") !== `Bearer ${process.env.CRON_SECRET}`
   ) {
     return new Response(null, { status: 401 });
   }
+
+  await req.json();
 
   const data = (await prisma.$queryRaw`
     SELECT
