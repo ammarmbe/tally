@@ -26,9 +26,20 @@ export default function Page() {
   if (data && !data.length) {
     return (
       <>
-        <h1 className="p-4 pb-0 text-display-xs font-semibold sm:p-8 sm:pb-0 md:text-display-sm">
-          My Courses
-        </h1>
+        <div className="flex flex-wrap items-center justify-between gap-5 p-4 pb-0 sm:p-8 sm:pb-0">
+          <h1 className="text-display-xs font-semibold md:text-display-sm">
+            My Courses
+          </h1>
+          <Link
+            href="/courses/add"
+            className={buttonStyles({
+              size: "sm",
+              variant: "primary"
+            })}
+          >
+            <Plus size={16} /> Add course
+          </Link>
+        </div>
         <div className="flex flex-grow flex-col items-center justify-center gap-2">
           <h2 className="text-text-lg font-semibold">No courses found.</h2>
           <p className="text-secondary text-text-md">
@@ -60,13 +71,10 @@ export default function Page() {
           </h1>
           <Link
             href="/courses/add"
-            className={buttonStyles(
-              {
-                size: "sm",
-                variant: "primary"
-              },
-              "mt-4"
-            )}
+            className={buttonStyles({
+              size: "sm",
+              variant: "primary"
+            })}
           >
             <Plus size={16} /> Add course
           </Link>
@@ -84,13 +92,10 @@ export default function Page() {
         </h1>
         <Link
           href="/courses/add"
-          className={buttonStyles(
-            {
-              size: "sm",
-              variant: "primary"
-            },
-            "mt-4"
-          )}
+          className={buttonStyles({
+            size: "sm",
+            variant: "primary"
+          })}
         >
           <Plus size={16} /> Add course
         </Link>
