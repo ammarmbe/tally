@@ -1,6 +1,6 @@
-import {auth} from "@/utils/auth";
+import { auth } from "@/utils/auth";
 import prisma from "@/utils/db";
-import {sendClassUpcomingNotification} from "@/utils/shared";
+import { sendClassUpcomingNotification } from "@/utils/shared";
 import * as v from "valibot";
 
 const schema = v.object({
@@ -56,6 +56,7 @@ export async function PATCH(req: Request) {
            JOIN "Course" courses ON courses."userId" = users.id
            JOIN "CourseTime" courseTimes ON courseTimes."courseId" = courses.id
     WHERE users."upcomingClassNotification" != 0
+      AND courses."deletedAt" IS NULL
       AND (courseTimes."lastNotified"::date IS NULL OR courseTimes."lastNotified"::date != CURRENT_DATE)
       AND EXTRACT(DOW FROM CURRENT_DATE AT TIME ZONE courseTimes.timezone) = courseTimes."dayOfWeek"
       AND courseTimes."startTime" != '' AND courseTimes."startTime" IS NOT NULL
