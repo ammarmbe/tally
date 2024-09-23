@@ -33,14 +33,14 @@ export default function Modal({
       <Dialog.Portal>
         <Dialog.Overlay
           className={twMerge(
-            "absolute inset-0 z-[50] bg-black/30 backdrop-blur-sm"
+            "sticky inset-0 top-0 z-[50] h-[100dvh] bg-black/30 backdrop-blur-sm"
           )}
         />
-        <Dialog.Content className="group absolute inset-0 flex items-center justify-center">
+        <Dialog.Content className="group sticky inset-0 top-0 z-[60] flex h-[100dvh] items-center justify-center">
           <Component
             onSubmit={onSubmit}
             className={twMerge(
-              "bg-primary relative z-[60] flex h-fit w-full max-w-[calc(100dvw-4rem)] flex-col gap-8 rounded-xl p-6 shadow-xl md:max-w-96",
+              "bg-primary relative flex h-fit w-full max-w-[calc(100dvw-4rem)] flex-col gap-8 rounded-xl p-6 shadow-xl md:max-w-96",
               "max-h-[70vh] overflow-auto transition-all group-data-[state=open]:animate-in group-data-[state=closed]:animate-out group-data-[state=closed]:fade-out-0 group-data-[state=open]:fade-in-0"
             )}
           >
