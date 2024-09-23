@@ -14,9 +14,6 @@ export default function Page() {
 
   const localizer = dayjsLocalizer(dayjs);
 
-  const [currentView, setCurrentView] = useState<
-    "month" | "week" | "work_week" | "day" | "agenda"
-  >("month");
   const [range, setRange] = useState<{ start: Date; end: Date }>({
     start: dayjs().startOf("month").startOf("week").toDate(),
     end: dayjs().endOf("month").endOf("week").toDate()
@@ -47,10 +44,6 @@ export default function Page() {
     }
   });
 
-  const handleViewChange = (view: typeof currentView) => {
-    setCurrentView(view);
-  };
-
   const handleRangeChange = (r: typeof range | Date[]) => {
     if (Array.isArray(r)) {
       setRange({ start: r[0], end: r[r.length - 1] });
@@ -61,30 +54,25 @@ export default function Page() {
 
   return (
     <div
-      className={`h-[min(80dvh,40rem)] p-4 sm:p-8 ${isLoading ? "pointer-events-none opacity-80" : ""}`}
+      className={`h-[min(80dvh,40rem)] sm:p-8 ${isLoading ? "pointer-events-none opacity-80" : ""}`}
     >
       <Calendar
         selectable
         localizer={localizer}
         events={data}
-        view={currentView}
-        onView={handleViewChange}
-        date={
-          currentView === "month"
-            ? dayjs(range?.start).add(15, "day").toDate()
-            : range?.start
-        }
+        view="month"
+        date={dayjs(range?.start).add(15, "day").toDate()}
         onRangeChange={handleRangeChange}
         eventPropGetter={(event) => {
           if (event.attended === true) {
             return {
-              className: "bg-brand-solid !text-white dark:!text-black"
+              className: "bg-brand-solid !text-white dark:!text-white"
             };
           }
 
           if (event.attended === false) {
             return {
-              className: "bg-error-solid !text-white dark:!text-black"
+              className: "bg-error-solid !text-white dark:!text-white"
             };
           }
 
@@ -99,6 +87,11 @@ export default function Page() {
         }}
         onSelectEvent={(event) => {
           const day = dayjs(event.date).format("YYYY-MM-DD");
+
+          router.push(`/date/${day}`);
+        }}
+        onShowMore={(_, date) => {
+          const day = dayjs(date).format("YYYY-MM-DD");
 
           router.push(`/date/${day}`);
         }}

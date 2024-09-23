@@ -1,5 +1,5 @@
 .rbc-agenda-view {
-  @apply overflow-hidden rounded-xl border;
+  @apply overflow-hidden border sm:rounded-xl;
   display: flex;
   flex-direction: column;
 }
@@ -165,7 +165,7 @@
 }
 
 .rbc-show-more {
-  @apply bg-quaternary text-secondary !m-0 !h-fit !w-full !rounded-[5px] px-[5px] py-0.5 !text-start !text-text-xs;
+  @apply bg-quaternary !m-0 !h-fit !w-full !rounded-[7px] px-[5px] py-0.5 !text-start !text-text-xs;
 }
 
 .rbc-row-segment:has(.rbc-show-more) {
@@ -173,7 +173,7 @@
 }
 
 .rbc-month-view {
-  @apply overflow-hidden rounded-xl border;
+  @apply overflow-hidden border sm:rounded-xl;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -284,6 +284,7 @@ button.rbc-input::-moz-focus-inner {
 }
 
 .rbc-calendar {
+  @apply max-h-[32rem] sm:max-h-full;
   box-sizing: border-box;
   height: 100%;
   display: flex;
@@ -373,6 +374,10 @@ button.rbc-input::-moz-focus-inner {
 
 .rbc-now > .rbc-button-link {
   @apply bg-brand-solid font-semibold text-white;
+}
+
+.rbc-row-segment {
+  @apply !hidden sm:!block;
 }
 
 .rbc-row-segment:has(.rbc-event) {
@@ -565,7 +570,7 @@ button.rbc-input::-moz-focus-inner {
 }
 
 .rbc-time-view {
-  @apply overflow-hidden rounded-xl border;
+  @apply overflow-hidden border sm:rounded-xl;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -685,9 +690,8 @@ button.rbc-input::-moz-focus-inner {
 }
 
 .rbc-toolbar {
-  @apply gap-y-3;
+  @apply mt-2.5 flex-row-reverse gap-y-3 p-4 sm:mt-0 sm:p-0;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   margin-bottom: 10px;
@@ -695,9 +699,7 @@ button.rbc-input::-moz-focus-inner {
 }
 
 .rbc-toolbar .rbc-toolbar-label {
-  flex-grow: 1;
-  padding: 0 10px;
-  text-align: center;
+  @apply flex-grow text-text-lg;
 }
 
 .rbc-btn-group {
@@ -736,8 +738,6 @@ button.rbc-input::-moz-focus-inner {
   @apply hover:bg-secondary text-secondary hover:text-primary active:bg-primary bg-primary hover:border-primary relative z-10 hover:z-30;
 }
 
-@media (max-width: 767px) {
-  .rbc-toolbar {
-    flex-direction: column;
-  }
+.rbc-btn-group:last-child {
+  @apply hidden;
 }
