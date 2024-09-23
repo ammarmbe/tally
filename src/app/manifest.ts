@@ -54,12 +54,6 @@ export default function manifest(): MetadataRoute.Manifest {
         sizes: "512x512",
         type: "image/png",
         purpose: "maskable"
-      },
-      {
-        src: "images/badge.png",
-        sizes: "92x92",
-        type: "image/png",
-        purpose: "badge"
       }
     ]
   };
