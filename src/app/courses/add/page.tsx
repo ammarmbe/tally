@@ -4,7 +4,7 @@ import { days as allDays } from "@/utils/client";
 import buttonStyles from "@/utils/styles/button";
 import { errorStyles, inputStyles, labelStyles } from "@/utils/styles/input";
 import { ArrowRight } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next-nprogress-bar";
 import { Fragment, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { twMerge } from "tailwind-merge";

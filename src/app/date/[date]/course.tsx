@@ -164,17 +164,6 @@ export default function Course({
       <div className="mt-4 grid grid-cols-2 gap-2">
         <button
           className={twMerge(
-            "flex h-fit items-center justify-center gap-2 rounded-md border px-3 py-2 !text-text-sm font-semibold transition-all active:shadow-focus-ring",
-            course.attended === true
-              ? "bg-brand-solid hover text-primary border-transparent"
-              : "hover:bg-success_card text-secondary hover:text-brand_card hover:border-success_card active:bg-primary bg-primary"
-          )}
-          onClick={() => attendanceMutation.mutate(true)}
-        >
-          Attended
-        </button>
-        <button
-          className={twMerge(
             "flex h-fit items-center justify-center gap-2 rounded-md border px-3 py-2 !text-text-sm font-semibold transition-all active:shadow-focus-ring-error",
             course.attended === false
               ? "bg-error-solid hover text-primary border-transparent"
@@ -183,6 +172,17 @@ export default function Course({
           onClick={() => attendanceMutation.mutate(false)}
         >
           Missed
+        </button>
+        <button
+          className={twMerge(
+            "flex h-fit items-center justify-center gap-2 rounded-md border px-3 py-2 !text-text-sm font-semibold transition-all active:shadow-focus-ring",
+            course.attended === true
+              ? "bg-brand-solid hover text-primary border-transparent"
+              : "hover:bg-success_card text-secondary hover:text-brand_card hover:border-success_card active:bg-primary bg-primary"
+          )}
+          onClick={() => attendanceMutation.mutate(true)}
+        >
+          Attended
         </button>
       </div>
     </div>

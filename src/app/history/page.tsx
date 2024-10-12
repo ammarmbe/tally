@@ -3,16 +3,16 @@
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import "./style.css";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next-nprogress-bar";
 import queryKeys from "@/utils/query-keys";
 import { TCourseHistory } from "@/utils/types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
+const localizer = dayjsLocalizer(dayjs);
+
 export default function Page() {
   const router = useRouter();
-
-  const localizer = dayjsLocalizer(dayjs);
 
   const [range, setRange] = useState<{ start: Date; end: Date }>({
     start: dayjs().startOf("month").startOf("week").toDate(),
@@ -41,7 +41,8 @@ export default function Page() {
         end: dayjs(item.end).toDate(),
         date: dayjs(item.date).toDate()
       }));
-    }
+    },
+    enabled: window.innerWidth > 640
   });
 
   const handleRangeChange = (r: typeof range | Date[]) => {
@@ -63,6 +64,7 @@ export default function Page() {
         view="month"
         date={dayjs(range?.start).add(15, "day").toDate()}
         onRangeChange={handleRangeChange}
+        onView={(view) => console.log(view)}
         eventPropGetter={(event) => {
           if (event.attended === true) {
             return {
@@ -87,11 +89,6 @@ export default function Page() {
         }}
         onSelectEvent={(event) => {
           const day = dayjs(event.date).format("YYYY-MM-DD");
-
-          router.push(`/date/${day}`);
-        }}
-        onShowMore={(_, date) => {
-          const day = dayjs(date).format("YYYY-MM-DD");
 
           router.push(`/date/${day}`);
         }}

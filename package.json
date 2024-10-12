@@ -46,6 +46,7 @@
     "net": "^1.0.2",
     "next": "15.0.0-rc.0",
     "next-auth": "^5.0.0-beta.20",
+    "next-nprogress-bar": "^2.3.14",
     "postcss": "^8.4.41",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.5",

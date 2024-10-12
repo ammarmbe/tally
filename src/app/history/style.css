@@ -367,6 +367,11 @@ button.rbc-input::-moz-focus-inner {
   @apply mt-0 size-auto;
 }
 
+.rbc-button-link,
+.rbc-event {
+  @apply pointer-events-none;
+}
+
 .rbc-button-link {
   @apply mt-[5px] size-7 rounded-full text-text-sm;
   cursor: pointer;
@@ -376,7 +381,8 @@ button.rbc-input::-moz-focus-inner {
   @apply bg-brand-solid font-semibold text-white;
 }
 
-.rbc-row-segment {
+.rbc-show-more,
+.rbc-event {
   @apply !hidden sm:!block;
 }
 

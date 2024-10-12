@@ -5,6 +5,7 @@ import ReactQueryProvider from "@/utils/react-query-provider";
 import Header from "@/components/header";
 import { Toaster } from "@/components/toast/toaster";
 import { Analytics } from "@vercel/analytics/next";
+import ProgressBar from "@/components/progress-bar";
 
 const inter = Inter({
   subsets: ["latin"]
@@ -35,6 +36,7 @@ export default function RootLayout({
         >
           <Toaster />
           <Analytics />
+          <ProgressBar />
           <Header />
           {children}
         </body>
