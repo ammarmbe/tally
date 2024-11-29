@@ -39,7 +39,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col">
       <h1 className="p-4 pb-0 text-display-xs font-semibold sm:p-8 sm:pb-0 md:text-display-sm">
-        My History
+        Calendar
       </h1>
       {children}
     </main>

@@ -21,8 +21,8 @@ const links = [
     text: "My courses"
   },
   {
-    href: "/history",
-    text: "My history"
+    href: "/calendar",
+    text: "Calendar"
   },
   {
     href: "/courses/add",
