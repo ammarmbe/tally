@@ -11,7 +11,7 @@ export default function ClassUpcoming({ user }: { user: User }) {
   const { toast } = useToast();
 
   const [duration, setDuration] = useState(
-    user.upcomingClassNotification.toString()
+    user.upcomingClassNotification?.toString()
   );
 
   const notificationsMutation = useMutation({

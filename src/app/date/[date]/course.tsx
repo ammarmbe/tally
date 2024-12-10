@@ -64,7 +64,7 @@ export default function Course({
             const attendance = calculatePercentage(
               total_attended,
               total_missed,
-              user?.attendanceAsPercentage
+              user?.attendanceAsPercentage ?? undefined
             );
 
             return {

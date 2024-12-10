@@ -5,9 +5,10 @@ import dayjs from "dayjs";
 
 export async function GET(
   _: Request,
-  { params }: { params: { date: string } }
+  { params }: { params: Promise<{ date: string }> }
 ) {
   const session = await auth();
+  const { date } = await params;
 
   if (!session?.user) {
     return new Response(null, { status: 401 });
@@ -19,7 +20,7 @@ export async function GET(
         userId: session.user.id,
         deletedAt: null
       },
-      dayOfWeek: dayjs(params.date).day()
+      dayOfWeek: dayjs(date).day()
     },
     select: {
       id: true,
@@ -34,7 +35,7 @@ export async function GET(
           abbreviation: true,
           courseAttendances: {
             where: {
-              date: params.date
+              date: date
             },
             select: {
               attended: true
@@ -73,7 +74,7 @@ export async function GET(
         const attendance = calculatePercentage(
           total_attended,
           total_missed,
-          session.user?.attendanceAsPercentage
+          session.user?.attendanceAsPercentage ?? undefined
         );
 
         return {

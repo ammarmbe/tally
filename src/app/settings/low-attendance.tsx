@@ -11,7 +11,7 @@ export default function LowAttendance({ user }: { user: User }) {
   const { toast } = useToast();
 
   const [percentage, setPercentage] = useState(
-    user.lowAttendanceNotification.toString()
+    user.lowAttendanceNotification?.toString()
   );
 
   const notificationsMutation = useMutation({

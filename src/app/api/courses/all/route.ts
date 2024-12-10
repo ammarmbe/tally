@@ -58,7 +58,7 @@ export async function GET() {
         const attendance = calculatePercentage(
           total_attended,
           total_missed,
-          session.user?.attendanceAsPercentage
+          session.user?.attendanceAsPercentage ?? undefined
         );
 
         return {
