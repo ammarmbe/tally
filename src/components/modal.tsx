@@ -13,7 +13,8 @@ export default function Modal({
   description,
   saveButton,
   cancelButton,
-  onSubmit
+  onSubmit,
+  className
 }: {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -24,6 +25,7 @@ export default function Modal({
   saveButton?: ReactNode;
   cancelButton?: ReactNode;
   onSubmit?: () => void;
+  className?: string;
 }) {
   const Component = onSubmit ? "form" : "div";
 
@@ -41,7 +43,8 @@ export default function Modal({
             onSubmit={onSubmit}
             className={twMerge(
               "bg-primary relative flex h-fit w-full max-w-[calc(100dvw-4rem)] flex-col gap-8 rounded-xl p-6 shadow-xl md:max-w-96",
-              "max-h-[70vh] overflow-auto transition-all group-data-[state=open]:animate-in group-data-[state=closed]:animate-out group-data-[state=closed]:fade-out-0 group-data-[state=open]:fade-in-0"
+              "max-h-[70vh] overflow-auto transition-all group-data-[state=open]:animate-in group-data-[state=closed]:animate-out group-data-[state=closed]:fade-out-0 group-data-[state=open]:fade-in-0",
+              className
             )}
           >
             <div className="flex flex-col gap-1">

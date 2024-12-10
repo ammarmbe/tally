@@ -132,7 +132,7 @@
 }
 
 .rbc-event-overlaps {
-  box-shadow: -1px 1px 5px 0px rgba(51, 51, 51, 0.5);
+  box-shadow: -1px 1px 5px 0 rgba(51, 51, 51, 0.5);
 }
 
 .rbc-event-continues-prior {
@@ -165,7 +165,7 @@
 }
 
 .rbc-show-more {
-  @apply bg-quaternary !m-0 !h-fit !w-full !rounded-[7px] px-[5px] py-0.5 !text-start !text-text-xs;
+  @apply bg-quaternary !m-0 !h-fit !w-full !rounded-[5px] px-[5px] py-0.5 !text-start !text-text-xs;
 }
 
 .rbc-row-segment:has(.rbc-show-more) {
@@ -173,7 +173,7 @@
 }
 
 .rbc-month-view {
-  @apply overflow-hidden border sm:rounded-xl;
+  @apply overflow-hidden border sm:rounded-xl border-x-0 sm:border-x;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -194,7 +194,6 @@
   position: relative;
   flex-direction: column;
   flex: 1 0 0;
-  flex-basis: 0px;
   overflow: hidden;
   height: 100%;
 }
@@ -208,6 +207,7 @@
   min-width: 0;
   padding-right: 5px;
   text-align: right;
+  cursor: pointer;
 }
 
 .rbc-date-cell.rbc-now {
@@ -229,7 +229,7 @@
 }
 
 .rbc-day-bg {
-  flex: 1 0 0%;
+  flex: 1 0 0;
 }
 
 .rbc-day-bg + .rbc-day-bg {
@@ -270,7 +270,7 @@ button.rbc-btn {
   overflow: visible;
   text-transform: none;
   -webkit-appearance: button;
-  appearance: button;
+  appearance: menulist-button;
   cursor: pointer;
 }
 
@@ -337,7 +337,7 @@ button.rbc-input::-moz-focus-inner {
 .rbc-header {
   @apply bg-secondary_subtle border-b font-semibold;
   overflow: hidden;
-  flex: 1 0 0%;
+  flex: 1 0 0;
   text-overflow: ellipsis;
   white-space: nowrap;
   padding: 0.5rem 3px;
@@ -422,8 +422,8 @@ button.rbc-input::-moz-focus-inner {
   /* Firefox */
 }
 
-.rbc-row-content-scrollable
-  .rbc-row-content-scroll-container::-webkit-scrollbar {
+.rbc-row-content-scrollable,
+.rbc-row-content-scroll-container::-webkit-scrollbar {
   display: none;
 }
 
@@ -527,7 +527,6 @@ button.rbc-input::-moz-focus-inner {
 .rbc-time-view-resources .rbc-time-header-content {
   min-width: auto;
   flex: 1 0 0;
-  flex-basis: 0px;
 }
 
 .rbc-time-view-resources .rbc-time-header-cell-single-day {
@@ -542,7 +541,6 @@ button.rbc-input::-moz-focus-inner {
 .rbc-time-view-resources .rbc-day-bg {
   width: 140px;
   flex: 1 1 0;
-  flex-basis: 0 px;
 }
 
 .rbc-time-header-content + .rbc-time-header-content {
@@ -658,7 +656,7 @@ button.rbc-input::-moz-focus-inner {
 
 .rbc-time-content {
   display: flex;
-  flex: 1 0 0%;
+  flex: 1 0 0;
   align-items: flex-start;
   width: 100%;
   @apply border-t;

@@ -1,210 +1,106 @@
 import buttonStyles from "@/utils/styles/button";
-import { days as allDays } from "@/utils/client";
-import { labelStyles, inputStyles, errorStyles } from "@/utils/styles/input";
 import { TCourse } from "@/utils/types";
-import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { twMerge } from "tailwind-merge";
-import { DialogClose } from "@radix-ui/react-dialog";
+import type { FormData } from "@/utils/types";
+import Modal from "@/components/modal";
+import PatchCourse from "@/components/patch-course";
+import { toast } from "@/components/toast/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import { Pencil } from "lucide-react";
+import router from "next/router";
 
-export default function EditCourse({
-  course,
-  setNewData
-}: {
-  course: TCourse;
-  setNewData: Dispatch<
-    SetStateAction<{
-      name: string;
-      abbreviation: string;
-      0: boolean;
-      1: boolean;
-      2: boolean;
-      3: boolean;
-      4: boolean;
-      5: boolean;
-      6: boolean;
-    } | null>
-  >;
-}) {
-  const [selectedDays, setSelectedDays] = useState<string[]>(
-    course.courseTimes.map((time) => time.dayOfWeek.toString())
-  );
+dayjs.extend(timezone);
 
+export default function EditCourse({ course }: { course: TCourse }) {
   const {
     register,
     handleSubmit,
+    setError,
+    watch,
+    setValue,
     formState: { errors }
-  } = useForm<{
-    name: string;
-    abbreviation: string;
-    "0": boolean;
-    "1": boolean;
-    "2": boolean;
-    "3": boolean;
-    "4": boolean;
-    "5": boolean;
-    "6": boolean;
-  }>({
+  } = useForm<FormData>({
     defaultValues: {
+      id: course.id,
       name: course.name,
-      abbreviation: course.abbreviation || undefined,
-      0: course.courseTimes.some((time) => time.dayOfWeek === 0),
-      1: course.courseTimes.some((time) => time.dayOfWeek === 1),
-      2: course.courseTimes.some((time) => time.dayOfWeek === 2),
-      3: course.courseTimes.some((time) => time.dayOfWeek === 3),
-      4: course.courseTimes.some((time) => time.dayOfWeek === 4),
-      5: course.courseTimes.some((time) => time.dayOfWeek === 5),
-      6: course.courseTimes.some((time) => time.dayOfWeek === 6)
+      abbreviation: course.abbreviation || "",
+      times: course.courseTimes.map((time) => ({
+        day: Number(time.dayOfWeek),
+        startTime: time.startTime ?? "",
+        endTime: time.endTime ?? "",
+        room: time.room ?? ""
+      }))
     }
   });
 
-  const onSubmit: SubmitHandler<{
-    name: string;
-    abbreviation: string;
-    "0": boolean;
-    "1": boolean;
-    "2": boolean;
-    "3": boolean;
-    "4": boolean;
-    "5": boolean;
-    "6": boolean;
-  }> = (data) => {
-    const mappedFormDays = Object.fromEntries(
-      Object.keys({
-        0: data["0"],
-        1: data["1"],
-        2: data["2"],
-        3: data["3"],
-        4: data["4"],
-        5: data["5"],
-        6: data["6"]
-      }).map((key) => [key, data[key as keyof typeof data]])
-    );
+  const addMutation = useMutation({
+    mutationFn: async (data: FormData) => {
+      const res = await fetch("/api/courses", {
+        method: "PATCH",
+        body: JSON.stringify({
+          ...data,
+          timezone: dayjs.tz.guess()
+        })
+      });
 
-    setNewData({
-      name: data.name,
-      abbreviation: data.abbreviation,
-      ...(mappedFormDays as {
-        0: boolean;
-        1: boolean;
-        2: boolean;
-        3: boolean;
-        4: boolean;
-        5: boolean;
-        6: boolean;
-      })
-    });
+      if (!res.ok) {
+        throw new Error();
+      }
+    },
+    onSuccess: async () => {
+      router.push("/courses");
+    },
+    onError: () => {
+      toast({
+        type: "foreground",
+        title: "An error occurred",
+        description: "An error occurred while adding the course."
+      });
+    }
+  });
+
+  const onSubmit: SubmitHandler<FormData> = (data) => {
+    if (data.times.length < 1) {
+      setError("root", {
+        type: "manual",
+        message: "At least one day is required"
+      });
+
+      return;
+    }
+
+    addMutation.mutate(data);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
-      <div className="flex flex-col gap-5">
-        <div className="flex flex-col gap-1.5">
-          <label
-            htmlFor="courseName"
-            className={labelStyles({ required: true })}
-          >
-            Course name
-          </label>
-          <input
-            type="text"
-            id="courseName"
-            className={inputStyles({
-              size: "sm",
-              error: Boolean(errors.name)
-            })}
-            {...register("name", {
-              required: {
-                value: true,
-                message: "Course name is required"
-              },
-              maxLength: {
-                value: 64,
-                message: "Course name must be at most 64 characters"
-              }
-            })}
-          />
-          {errors.name && <p className={errorStyles}>{errors.name.message}</p>}
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="courseAbbreviation" className={labelStyles()}>
-            Abbreviation (short name)
-          </label>
-          <input
-            type="text"
-            id="courseAbbreviation"
-            className={inputStyles({
-              size: "sm",
-              error: Boolean(errors.abbreviation)
-            })}
-            {...register("abbreviation", {
-              maxLength: {
-                value: 12,
-                message: "Abbreviation must be at most 12 characters"
-              }
-            })}
-          />
-          {errors.abbreviation && (
-            <p className={errorStyles}>{errors.abbreviation.message}</p>
-          )}
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <p className={labelStyles({ required: true })}>Days</p>
-          <div className="flex flex-wrap gap-2">
-            {allDays.map((day) => (
-              <Fragment key={day.value}>
-                <label
-                  htmlFor={day.value}
-                  className={twMerge(
-                    "flex h-fit cursor-pointer items-center justify-center gap-2 rounded-md border px-3 py-2 !text-text-sm font-semibold transition-all active:shadow-focus-ring-gray",
-                    selectedDays.includes(day.value)
-                      ? "border-transparent bg-gray-900 text-gray-100 hover:bg-gray-700 active:bg-gray-900 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300 dark:active:bg-gray-100"
-                      : "hover:bg-secondary text-secondary hover:text-primary active:bg-primary bg-primary hover:border-primary"
-                  )}
-                >
-                  {day.label}
-                </label>
-                <input
-                  type="checkbox"
-                  id={day.value}
-                  hidden
-                  {...register(day.value)}
-                  onClick={() => {
-                    setSelectedDays((prev) =>
-                      prev.includes(day.value)
-                        ? prev.filter((d) => d !== day.value)
-                        : [...prev, day.value]
-                    );
-                  }}
-                />
-              </Fragment>
-            ))}
-          </div>
-        </div>
-        {errors.root ? (
-          <p className={errorStyles}>{errors.root.message}</p>
-        ) : null}
-      </div>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <DialogClose asChild>
-          <button
-            className={buttonStyles({
-              size: "md",
-              variant: "secondary"
-            })}
-          >
-            Cancel
-          </button>
-        </DialogClose>
+    <Modal
+      trigger={
         <button
-          className={buttonStyles({
-            size: "md",
-            variant: "primary"
-          })}
+          className={buttonStyles(
+            {
+              size: "sm",
+              variant: "tertiary",
+              dropdown: true
+            },
+            "justify-start"
+          )}
+          disabled={addMutation.isPending}
         >
-          Next
+          <Pencil size={16} /> Edit
         </button>
-      </div>
-    </form>
+      }
+      title="Edit course"
+      className="md:max-w-md"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <PatchCourse
+        register={register}
+        setValue={setValue}
+        watch={watch}
+        errors={errors}
+      />
+    </Modal>
   );
 }

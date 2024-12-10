@@ -9,15 +9,18 @@ declare module "next-auth" {
     name?: string | null;
     email?: string | null;
     image?: string | null;
-    attendanceAsPercentage: boolean;
-    upcomingClassNotification: number;
-    lowAttendanceNotification: number;
+    attendanceAsPercentage?: boolean | null;
+    upcomingClassNotification?: number | null;
+    lowAttendanceNotification?: number | null;
   }
 }
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const { handlers, signIn, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
-  providers: [Google],
+  providers: [Google({
+    clientId: process.env.AUTH_GOOGLE_ID!,
+    clientSecret: process.env.AUTH_GOOGLE_SECRET!
+  })],
   session: {
     strategy: "database"
   },

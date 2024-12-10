@@ -24,7 +24,8 @@ const variants = {
     primary:
       "bg-brand-solid border-transparent text-primary_on-brand shadow-xs hover",
     secondary: "bg-primary border-primary text-secondary shadow-xs hover",
-    tertiary: "bg-primary border-transparent text-secondary shadow-xs hover"
+    tertiary:
+      "bg-primary border-transparent text-secondary shadow-xs hover disabled:!bg-transparent disabled:!border-transparent"
   },
   danger: {
     primary:

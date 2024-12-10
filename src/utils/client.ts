@@ -8,7 +8,7 @@ export function useUser() {
     queryKey: queryKeys.user(),
     queryFn: async () => {
       const res = await fetch("/api/user");
-      return res.json() as Promise<User | null>;
+      return (await res.json()) as Promise<User | null>;
     }
   });
 
@@ -102,14 +102,40 @@ export const groupCourseTimes = (courseTimes: TCourseTime[]) => {
   return Object.values(
     courseTimes.reduce(
       (acc, courseTime) => {
-        const key = `${courseTime.startTime}-${courseTime.endTime}-${courseTime.room}`;
+        const key = `${courseTime.dayOfWeek}`;
+
         if (!acc[key]) {
-          acc[key] = { ...courseTime, days: [] };
+          acc[key] = { dayOfWeek: courseTime.dayOfWeek, times: [] };
         }
-        acc[key].days.push(courseTime.dayOfWeek);
+
+        const timeKey = `${courseTime.startTime}-${courseTime.endTime}-${courseTime.room}`;
+        const timesSet = new Set(
+          acc[key].times.map(
+            (time) => `${time.startTime}-${time.endTime}-${time.room}`
+          )
+        );
+
+        if (!timesSet.has(timeKey)) {
+          acc[key].times.push({
+            startTime: courseTime.startTime,
+            endTime: courseTime.endTime,
+            room: courseTime.room
+          });
+        }
+
         return acc;
       },
-      {} as Record<string, TCourseTime & { days: number[] }>
+      {} as Record<
+        string,
+        {
+          dayOfWeek: number;
+          times: {
+            startTime: string | null;
+            endTime: string | null;
+            room: string | null;
+          }[];
+        }
+      >
     )
   );
 };

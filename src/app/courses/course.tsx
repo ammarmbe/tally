@@ -1,17 +1,16 @@
 import { TCourse } from "@/utils/types";
 import dayjs from "dayjs";
-import { Clock, Ellipsis, MapPin, Pencil } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { Clock, Ellipsis, MapPin } from "lucide-react";
+import { useMemo } from "react";
 import isBetween from "dayjs/plugin/isBetween";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {
   defaultDate,
   groupCourseTimes,
-  calculateNextClass
+  calculateNextClass,
+  days
 } from "@/utils/client";
 import EditCourse from "./edit-course";
-import EditCourseTimes from "./edit-course-times";
-import Modal from "@/components/modal";
 import buttonStyles from "@/utils/styles/button";
 import Dropdown from "@/components/dropdown";
 import DeleteCourse from "./delete-course";
@@ -20,19 +19,6 @@ dayjs.extend(isBetween);
 dayjs.extend(relativeTime);
 
 export default function Course({ course }: { course: TCourse }) {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [newData, setNewData] = useState<{
-    name: string;
-    abbreviation: string;
-    0: boolean;
-    1: boolean;
-    2: boolean;
-    3: boolean;
-    4: boolean;
-    5: boolean;
-    6: boolean;
-  } | null>(null);
-
   const groupedCourseTimes = useMemo(
     () => groupCourseTimes(course.courseTimes),
     [course.courseTimes]
@@ -42,12 +28,6 @@ export default function Course({ course }: { course: TCourse }) {
     () => calculateNextClass(course.courseTimes),
     [course.courseTimes]
   );
-
-  useEffect(() => {
-    if (modalOpen === false) {
-      setNewData(null);
-    }
-  }, [modalOpen]);
 
   return (
     <div className="text-secondary flex h-full flex-col rounded-xl border p-4 shadow-xs transition-all">
@@ -88,38 +68,7 @@ export default function Course({ course }: { course: TCourse }) {
                 </button>
               }
             >
-              <Modal
-                open={modalOpen}
-                onOpenChange={setModalOpen}
-                trigger={
-                  <button
-                    className={buttonStyles(
-                      {
-                        size: "sm",
-                        variant: "tertiary",
-                        dropdown: true
-                      },
-                      "justify-start"
-                    )}
-                  >
-                    <Pencil size={16} /> Edit
-                  </button>
-                }
-                saveButton={null}
-                cancelButton={null}
-                title="Edit course"
-              >
-                {newData ? (
-                  <EditCourseTimes
-                    course={course}
-                    setModalOpen={setModalOpen}
-                    setNewData={setNewData}
-                    newData={newData}
-                  />
-                ) : (
-                  <EditCourse course={course} setNewData={setNewData} />
-                )}
-              </Modal>
+              <EditCourse course={course} />
               <DeleteCourse course={course} />
             </Dropdown>
           </div>
@@ -140,33 +89,33 @@ export default function Course({ course }: { course: TCourse }) {
         <div className="my-5 border-t" />
         <div className="flex flex-col gap-5">
           {groupedCourseTimes.map((courseTime) => (
-            <div key={courseTime.id}>
+            <div key={courseTime.dayOfWeek}>
               <p className="text-primary mb-2 text-text-sm font-medium">
-                {courseTime.days
-                  .map((day) =>
-                    dayjs()
-                      .day(day)
-                      .format(courseTime.days.length === 1 ? "dddd" : "ddd")
-                  )
-                  .join(", ")}
+                {days[courseTime.dayOfWeek]?.long}
               </p>
-              <div className="text-secondary flex items-center gap-2 font-medium">
-                <Clock size={16} />
-                <p className="flex items-center text-text-sm">
-                  {courseTime.startTime
-                    ? dayjs(defaultDate + courseTime.startTime).format("h:mm A")
-                    : "N/A"}{" "}
-                  -{" "}
-                  {courseTime.startTime
-                    ? dayjs(defaultDate + courseTime.endTime).format("h:mm A")
-                    : "N/A"}
-                </p>
-              </div>
-              <div className="text-secondary mt-1 flex items-center gap-2">
-                <MapPin size={16} />
-                <p className="flex items-center text-text-sm font-medium">
-                  {courseTime.room || "N/A"}
-                </p>
+              <div className="flex flex-col gap-3.5">
+                {courseTime.times.map((time) => (
+                  <div key={time.startTime}>
+                    <div className="text-secondary flex items-center gap-2 font-medium">
+                      <Clock size={16} />
+                      <p className="flex items-center text-text-sm">
+                        {time.startTime
+                          ? dayjs(defaultDate + time.startTime).format("h:mm A")
+                          : "N/A"}{" "}
+                        -{" "}
+                        {time.startTime
+                          ? dayjs(defaultDate + time.endTime).format("h:mm A")
+                          : "N/A"}
+                      </p>
+                    </div>
+                    <div className="text-secondary mt-1 flex items-center gap-2">
+                      <MapPin size={16} />
+                      <p className="flex items-center text-text-sm font-medium">
+                        {time.room || "N/A"}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           ))}

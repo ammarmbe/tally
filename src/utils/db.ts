@@ -8,9 +8,8 @@ const prismaClientSingleton = () => {
 
   const pool = new Pool({ connectionString });
   const adapter = new PrismaNeon(pool);
-  const prisma = new PrismaClient({ adapter });
-
-  return prisma;
+  
+  return new PrismaClient({ adapter });
 };
 
 declare const globalThis: {

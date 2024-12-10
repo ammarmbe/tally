@@ -10,24 +10,26 @@ import Link from "next/link";
 import Course from "./course";
 import Loading from "./loading";
 import { useUser } from "@/utils/client";
+import { use } from "react";
 
-export default function Page({ params }: { params: { date: string } }) {
+export default function Page({ params }: { params: Promise<{ date: string }> }) {
   const user = useUser();
+  const { date } = use(params);
 
   const { data, isLoading } = useQuery({
     queryKey: queryKeys.courses.date(
-      params.date === "today" ? dayjs().format("YYYY-MM-DD") : params.date
+      date === "today" ? dayjs().format("YYYY-MM-DD") : date
     ),
     queryFn: async () => {
       const res = await fetch(
-        `/api/courses/date/${params.date === "today" ? dayjs().format("YYYY-MM-DD") : params.date}`
+        `/api/courses/date/${date === "today" ? dayjs().format("YYYY-MM-DD") : date}`
       );
 
       if (!res.ok) {
         throw new Error();
       }
 
-      return res.json() as Promise<TCourseTime[]>;
+      return await res.json() as Promise<TCourseTime[]>;
     }
   });
 
@@ -35,14 +37,14 @@ export default function Page({ params }: { params: { date: string } }) {
     return (
       <div className="flex flex-grow flex-col items-center justify-center gap-2">
         <h2 className="text-text-lg font-semibold">
-          {params.date === "today"
+          {date === "today"
             ? "No courses for today! 🎉"
             : "No courses for this day."}
         </h2>
         <p className="text-secondary text-text-md">
-          {params.date === "today"
+          {date === "today"
             ? `Enjoy your day off${user?.name ? `, ${user.name.split(" ")[0]}` : ""}.`
-            : `You ${dayjs().isBefore(dayjs(params.date), "day") ? "had" : "have"} no courses on this day.`}
+            : `You ${dayjs().isBefore(dayjs(date), "day") ? "have" : "had"} no courses on this day.`}
         </p>
         <Link
           href="/courses"
@@ -76,7 +78,7 @@ export default function Page({ params }: { params: { date: string } }) {
           key={course.id}
           course={course}
           date={
-            params.date === "today" ? dayjs().format("YYYY-MM-DD") : params.date
+            date === "today" ? dayjs().format("YYYY-MM-DD") : date
           }
           user={user}
         />

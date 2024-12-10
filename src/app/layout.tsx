@@ -6,6 +6,7 @@ import Header from "@/components/header";
 import { Toaster } from "@/components/toast/toaster";
 import { Analytics } from "@vercel/analytics/next";
 import ProgressBar from "@/components/progress-bar";
+import type React from "react";
 
 const inter = Inter({
   subsets: ["latin"]

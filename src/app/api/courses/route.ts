@@ -12,54 +12,16 @@ const schema = v.object({
   name: v.pipe(v.string(), v.minLength(1), v.maxLength(64)),
   abbreviation: v.nullish(v.pipe(v.string(), v.maxLength(12))),
   timezone: v.nullish(v.string()),
-  "0": v.nullish(
-    v.object({
-      startTime: v.nullish(v.string()),
-      endTime: v.nullish(v.string()),
-      room: v.nullish(v.pipe(v.string(), v.maxLength(64)))
-    })
-  ),
-  "1": v.nullish(
-    v.object({
-      startTime: v.nullish(v.string()),
-      endTime: v.nullish(v.string()),
-      room: v.nullish(v.pipe(v.string(), v.maxLength(64)))
-    })
-  ),
-  "2": v.nullish(
-    v.object({
-      startTime: v.nullish(v.string()),
-      endTime: v.nullish(v.string()),
-      room: v.nullish(v.pipe(v.string(), v.maxLength(64)))
-    })
-  ),
-  "3": v.nullish(
-    v.object({
-      startTime: v.nullish(v.string()),
-      endTime: v.nullish(v.string()),
-      room: v.nullish(v.pipe(v.string(), v.maxLength(64)))
-    })
-  ),
-  "4": v.nullish(
-    v.object({
-      startTime: v.nullish(v.string()),
-      endTime: v.nullish(v.string()),
-      room: v.nullish(v.pipe(v.string(), v.maxLength(64)))
-    })
-  ),
-  "5": v.nullish(
-    v.object({
-      startTime: v.nullish(v.string()),
-      endTime: v.nullish(v.string()),
-      room: v.nullish(v.pipe(v.string(), v.maxLength(64)))
-    })
-  ),
-  "6": v.nullish(
-    v.object({
-      startTime: v.nullish(v.string()),
-      endTime: v.nullish(v.string()),
-      room: v.nullish(v.pipe(v.string(), v.maxLength(64)))
-    })
+  times: v.pipe(
+    v.array(
+      v.object({
+        day: v.pipe(v.number(), v.minValue(0), v.maxValue(6)),
+        startTime: v.nullish(v.string()),
+        endTime: v.nullish(v.string()),
+        room: v.nullish(v.pipe(v.string(), v.maxLength(64)))
+      })
+    ),
+    v.minLength(1)
   )
 });
 
@@ -76,26 +38,14 @@ export async function POST(req: Request): Promise<Response> {
   try {
     const parsedData: ParsedData = v.parse(schema, data);
 
-    if (
-      Object.keys(parsedData).filter(
-        (key) => !Number.isNaN(Number.parseInt(key))
-      ).length === 0
-    ) {
-      return new Response(null, { status: 422 });
-    }
-
-    const courseTimesData = Object.keys(parsedData)
-      .filter((key) => !Number.isNaN(Number.parseInt(key)))
-      .map((key) => ({
-        id: nanoid(),
-        dayOfWeek: Number.parseInt(key),
-        timezone: parsedData.timezone,
-        startTime:
-          parsedData[key as "0" | "1" | "2" | "3" | "4" | "5" | "6"]?.startTime,
-        endTime:
-          parsedData[key as "0" | "1" | "2" | "3" | "4" | "5" | "6"]?.endTime,
-        room: parsedData[key as "0" | "1" | "2" | "3" | "4" | "5" | "6"]?.room
-      }));
+    const courseTimesData = parsedData.times.map((time) => ({
+      id: nanoid(),
+      dayOfWeek: Number(time.day),
+      timezone: parsedData.timezone,
+      startTime: time.startTime,
+      endTime: time.endTime,
+      room: time.room
+    }));
 
     await prisma.course.create({
       data: {
@@ -114,6 +64,8 @@ export async function POST(req: Request): Promise<Response> {
     return new Response("OK");
   } catch (error) {
     if (error instanceof v.ValiError) {
+      console.error(error);
+
       return new Response(null, { status: 422 });
     }
 
@@ -136,17 +88,13 @@ export async function PATCH(req: Request): Promise<Response> {
       return new Response(null, { status: 422 });
     }
 
-    const courseTimesData = Object.keys(parsedData)
-      .filter((key) => !Number.isNaN(Number.parseInt(key)))
-      .map((key) => ({
-        id: nanoid(),
-        dayOfWeek: Number.parseInt(key),
-        startTime:
-          parsedData[key as "0" | "1" | "2" | "3" | "4" | "5" | "6"]?.startTime,
-        endTime:
-          parsedData[key as "0" | "1" | "2" | "3" | "4" | "5" | "6"]?.endTime,
-        room: parsedData[key as "0" | "1" | "2" | "3" | "4" | "5" | "6"]?.room
-      }));
+    const courseTimesData = parsedData.times.map((time) => ({
+      id: nanoid(),
+      dayOfWeek: Number(time.day),
+      startTime: time.startTime,
+      endTime: time.endTime,
+      room: time.room
+    }));
 
     await prisma.course.update({
       where: {
@@ -178,6 +126,8 @@ export async function PATCH(req: Request): Promise<Response> {
     return new Response("OK");
   } catch (error) {
     if (error instanceof v.ValiError) {
+      console.error(error);
+
       return new Response(null, { status: 422 });
     }
 

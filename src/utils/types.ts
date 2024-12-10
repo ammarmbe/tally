@@ -50,3 +50,17 @@ export type TCourseHistory = {
   start: string;
   end: string;
 };
+
+export type DaySchedule = {
+  day: number;
+  startTime: string;
+  endTime: string;
+  room: string;
+};
+
+export type FormData = {
+  id?: string;
+  name: string;
+  abbreviation: string;
+  times: DaySchedule[];
+};

@@ -8,7 +8,7 @@ export default function Dropdown({
   trigger,
   children,
   className,
-  align,
+  align
 }: {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -22,9 +22,9 @@ export default function Dropdown({
       <DropdownMenu.Trigger asChild>{trigger}</DropdownMenu.Trigger>
       <DropdownMenu.Content
         className={twMerge(
-          "bg-primary mt-2 flex flex-col rounded-md border shadow-lg",
+          "bg-primary mt-2 flex flex-col overflow-hidden rounded-md border shadow-lg",
           "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-          className,
+          className
         )}
         align={align}
       >

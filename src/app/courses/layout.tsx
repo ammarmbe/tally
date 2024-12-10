@@ -19,7 +19,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
         throw new Error();
       }
 
-      return res.json() as Promise<TCourse[]>;
+      return await res.json() as Promise<TCourse[]>;
     }
   });
 

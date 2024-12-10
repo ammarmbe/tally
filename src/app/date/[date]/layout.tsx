@@ -11,33 +11,35 @@ export default async function Layout({
   params
 }: {
   children: ReactNode;
-  params: { date: string };
+  params: Promise<{ date: string }>;
 }) {
   const session = await auth();
 
   if (!session?.user) return redirect("/login");
 
+  const { date } = await params;
+
   await queryClient.prefetchQuery({
     queryKey: queryKeys.courses.date(
-      params.date === "today" ? dayjs().format("YYYY-MM-DD") : params.date
+      date === "today" ? dayjs().format("YYYY-MM-DD") : date
     ),
     queryFn: async () => {
       const res = await fetch(
-        `/api/courses/date/${params.date === "today" ? dayjs().format("YYYY-MM-DD") : params.date}`
+        `/api/courses/date/${date === "today" ? dayjs().format("YYYY-MM-DD") : date}`
       );
 
       if (!res.ok) {
         throw new Error();
       }
 
-      return res.json() as Promise<TCourseTime[]>;
+      return await res.json() as Promise<TCourseTime[]>;
     }
   });
 
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col">
       <h1 className="p-4 pb-0 text-display-xs font-semibold sm:p-8 sm:pb-0 md:text-display-sm">
-        {dayjs(params.date === "today" ? undefined : params.date).format(
+        {dayjs(date === "today" ? undefined : date).format(
           "dddd, MMMM D, YYYY"
         )}
       </h1>
