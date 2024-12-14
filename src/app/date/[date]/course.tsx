@@ -156,7 +156,7 @@ export default function Course({
           ) : null}
         </div>
         <div
-          className={`flex size-10 flex-none items-center justify-center self-start rounded-full text-text-sm font-bold leading-none tracking-wider text-white ${course.attendance.percentage >= 80 ? "bg-brand-solid" : course.attendance.percentage >= 60 ? "bg-warning-solid" : "bg-error-solid"}`}
+          className={`flex size-10 flex-none items-center justify-center self-start rounded-full text-text-sm font-bold leading-none tracking-wider text-white ${course.attendance.percentage >= 75 ? "bg-brand-solid" : course.attendance.percentage >= 50 ? "bg-warning-solid" : "bg-error-solid"}`}
         >
           {course.attendance.label}
         </div>
